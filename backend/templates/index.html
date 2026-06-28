@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Analyzer - AI Viability & Shark Tank Coach</title>
+    <meta name="description" content="Validate your startup idea with real-world Reddit, GitHub, and competitor data, and pitch to AI Sharks.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(22, 29, 49, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #a855f7;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --font-family: 'Plus Jakarta Sans', sans-serif;
+            --shadow-glow: 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Header section styling */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 50%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
+            display: inline-block;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Grid layout */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 430px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Premium glassmorphic cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Tabs styling */
+        .tabs-header {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.75rem 1.25rem;
+            font-family: var(--font-family);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--accent-cyan);
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            background: rgba(10, 15, 25, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+            background: rgba(10, 15, 25, 0.9);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Glow buttons */
+        .btn-glow {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1.1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.35);
+        }
+
+        .btn-glow:active {
+            transform: translateY(0);
+        }
+
+        /* Results dashboard */
+        .results-container {
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .state-empty {
+            text-align: center;
+            padding: 5rem 3rem;
+            color: var(--text-secondary);
+            margin: auto 0;
+        }
+
+        .state-empty svg {
+            width: 70px;
+            height: 70px;
+            stroke: var(--text-secondary);
+            opacity: 0.4;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Loading state */
+        .state-loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 3rem;
+            margin: auto 0;
+        }
+
+        .loader-orb {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            position: relative;
+            animation: pulseOrb 2s infinite ease-in-out;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+            margin-bottom: 2rem;
+        }
+
+        .loader-orb::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            background: var(--bg-color);
+            border-radius: 50%;
+        }
+
+        .state-loading h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Analysis output layout */
+        .analysis-output {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Top summary & Viability meter */
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 1.75rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .analysis-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .analysis-title-area {
+            flex: 1;
+        }
+
+        .analysis-title-area h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .analysis-title-area p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .meter-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .meter-svg {
+            transform: rotate(-90deg);
+            width: 100px;
+            height: 100px;
+        }
+
+        .meter-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 10;
+        }
+
+        .meter-fill {
+            fill: none;
+            stroke: url(#meter-grad);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .meter-score {
+            position: absolute;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .meter-score span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Sections */
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-left: 3px solid var(--accent-cyan);
+            padding-left: 0.75rem;
+        }
+
+        .analysis-section {
+            margin-bottom: 2rem;
+        }
+
+        .text-block {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.95rem;
+            color: #d1d5db;
+        }
+
+        /* SWOT analysis grid styling */
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .swot-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .swot-quad {
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .swot-quad h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .swot-s { background: rgba(16, 185, 129, 0.06); border-color: rgba(16, 185, 129, 0.15); }
+        .swot-s h4 { color: var(--accent-emerald); }
+        .swot-w { background: rgba(244, 63, 94, 0.06); border-color: rgba(244, 63, 94, 0.15); }
+        .swot-w h4 { color: var(--accent-rose); }
+        .swot-o { background: rgba(6, 182, 212, 0.06); border-color: rgba(6, 182, 212, 0.15); }
+        .swot-o h4 { color: var(--accent-cyan); }
+        .swot-t { background: rgba(168, 85, 247, 0.06); border-color: rgba(168, 85, 247, 0.15); }
+        .swot-t h4 { color: var(--accent-purple); }
+
+        .swot-quad ul {
+            list-style: none;
+        }
+
+        .swot-quad li {
+            font-size: 0.85rem;
+            color: #d1d5db;
+            margin-bottom: 0.25rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .swot-quad li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-secondary);
+        }
+
+        /* Competitors Table styling */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(10, 15, 25, 0.6);
+            color: var(--accent-cyan);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .competitor-name {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .competitor-reach {
+            font-size: 0.8rem;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent-cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* Recommendations & action lists */
+        .verdict-card {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .list-items {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .list-items li {
+            position: relative;
+            padding-left: 1.75rem;
+            font-size: 0.95rem;
+            color: #d1d5db;
+        }
+
+        .list-items.features li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .list-items.validation li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-emerald);
+            font-weight: bold;
+        }
+
+        .list-items.alternatives li::before {
+            content: '➔';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        /* Events Section */
+        .events-panel {
+            margin-top: 2rem;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .event-card {
+            background: rgba(10, 15, 25, 0.4);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+        }
+
+        .event-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            background: rgba(10, 15, 25, 0.6);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+            gap: 0.5rem;
+        }
+
+        .event-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .event-tag {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .tag-accelerator {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .tag-competition {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tag-casting {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--accent-rose);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        .event-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .event-deadline {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .event-link {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .event-link:hover {
+            color: white;
+        }
+
+        /* Sources drawer */
+        .sources-section {
+            border-top: 1px solid var(--card-border);
+            padding-top: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .source-link-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .source-pill {
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        .source-pill:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-cyan);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        /* Pitch Coach Chat UI */
+        .pitch-coach-area {
+            display: none;
+            flex-direction: column;
+            height: 520px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .shark-panel {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .shark-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        .shark-details h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .shark-details p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            background: rgba(10, 15, 25, 0.4);
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.85rem 1.1rem;
+            border-radius: 14px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .bubble-shark {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #f1f5f9;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .bubble-user {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            color: #f1f5f9;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-feedback {
+            font-size: 0.82rem;
+            color: var(--accent-cyan);
+            border-left: 2px solid var(--accent-cyan);
+            padding-left: 0.5rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .chat-input-area input {
+            flex-grow: 1;
+            background: rgba(10, 15, 25, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 0.85rem;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+        }
+
+        .chat-input-area input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0 1.5rem;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Deal Verdict Card */
+        .verdict-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border: 2px dashed var(--accent-emerald);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            animation: pulseOrb 2.5s infinite ease-in-out;
+            margin-top: auto;
+        }
+
+        .verdict-banner.rejected {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-color: var(--accent-rose);
+        }
+
+        .verdict-banner h4 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .verdict-banner p {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: scale(0.98); box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 45px rgba(168, 85, 247, 0.5), 0 0 70px rgba(6, 182, 212, 0.3); }
+            100% { transform: scale(0.98); box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="app-title">Startup Analyzer</h1>
+            <p>Brutal real-world viability analysis & Shark Tank coaching simulator</p>
+        </header>
+
+        <div class="grid-layout">
+            <!-- Left Panel: Input & Events -->
+            <div class="left-panel">
+                <section class="glass-card form-section" aria-labelledby="form-title">
+                    <h2 id="form-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--accent-cyan);">💡</span> Analyze Your Idea
+                    </h2>
+                    
+                    <form id="analyze-form" onsubmit="submitIdea(event)">
+                        <div class="form-group">
+                            <label for="startup-idea">Startup Idea</label>
+                            <textarea id="startup-idea" placeholder="Describe your startup idea clearly. E.g., An AI-powered recipe planner that scans your fridge using a camera to generate meal prep lists..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-interests">Your Hobbies / Interests (Optional)</label>
+                            <input type="text" id="user-interests" placeholder="E.g., cooking, fitness, SaaS, finance...">
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 5px;">Used to explore pivots and suggest alternative startup directions.</span>
+                        </div>
+
+                        <button type="submit" class="btn-glow" id="submit-btn">Run Viability Check</button>
+                    </form>
+                </section>
+
+                <section class="events-panel" aria-labelledby="events-title">
+                    <h2 id="events-title" style="font-size: 1.25rem; font-weight: 700; margin-top: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--accent-purple);">🦈</span> Booster Events & Pitch Calls
+                    </h2>
+                    <div class="events-grid" id="events-container">
+                        <!-- Loading placeholder -->
+                        <div style="text-align: center; color: var(--text-secondary); padding: 2rem; font-size: 0.9rem;">
+                            Scanning casting calls & accelerator deadlines...
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Panel: Tabs & Results -->
+            <div class="right-panel">
+                <main class="glass-card results-container" id="results-card">
+                    
+                    <!-- Tabs Selection -->
+                    <div class="tabs-header" id="tabs-header" style="display: none;">
+                        <button class="tab-btn active" id="tab-btn-analysis" onclick="switchTab('analysis')">
+                            📊 Viability Report
+                        </button>
+                        <button class="tab-btn" id="tab-btn-pitch" onclick="switchTab('pitch')">
+                            💬 Shark Tank Pitch Coach
+                        </button>
+                    </div>
+                    
+                    <!-- Empty/Welcome State -->
+                    <div class="state-empty" id="state-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <h3>Awaiting Startup Idea</h3>
+                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Enter your startup idea and optional interests on the left. The AI will crawl Reddit, GitHub, and competitor archives to generate a viability rating and SWOT analysis.</p>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="state-loading" id="state-loading">
+                        <div class="loader-orb"></div>
+                        <h3>Analyzing Real-World Footprint</h3>
+                        <p id="loading-subtext" style="color: var(--text-secondary); max-width: 400px; font-size: 0.9rem; margin-top: 0.5rem;">
+                            Searching Reddit for user complaints...
+                        </p>
+                    </div>
+
+                    <!-- Detailed Analysis Tab Output -->
+                    <div class="analysis-output" id="analysis-tab-content">
+                        
+                        <!-- Header with Title & Meter -->
+                        <div class="analysis-header">
+                            <div class="analysis-title-area">
+                                <h2 id="out-verdict-title">Analysis Completed</h2>
+                                <p id="out-idea-summary">Your startup idea summary goes here.</p>
+                            </div>
+                            
+                            <!-- Circular Viability Score -->
+                            <div class="meter-container">
+                                <svg class="meter-svg">
+                                    <defs>
+                                        <linearGradient id="meter-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#06b6d4" />
+                                            <stop offset="50%" stop-color="#a855f7" />
+                                            <stop offset="100%" stop-color="#f43f5e" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="meter-bg" cx="50" cy="50" r="45" />
+                                    <circle class="meter-fill" id="score-circle" cx="50" cy="50" r="45" />
+                                </svg>
+                                <div class="meter-score">
+                                    <span id="score-text">0</span>
+                                    <span>Viable</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SWOT Analysis Section -->
+                        <div class="analysis-section">
+                            <h3 class="section-title">⚡ SWOT Analysis</h3>
+                            <div class="swot-grid">
+                                <div class="swot-quad swot-s">
+                                    <h4>Strengths</h4>
+                                    <ul id="swot-strengths"></ul>
+                                </div>
+                                <div class="swot-quad swot-w">
+                                    <h4>Weaknesses</h4>
+                                    <ul id="swot-weaknesses"></ul>
+                                </div>
+                                <div class="swot-quad swot-o">
+                                    <h4>Opportunities</h4>
+                                    <ul id="swot-opportunities"></ul>
+                                </div>
+                                <div class="swot-quad swot-t">
+                                    <h4>Threats</h4>
+                                    <ul id="swot-threats"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Market Demand Analysis -->
+                        <div class="analysis-section">
+                            <h3 class="section-title">📊 Market Demand & Reddit Discussions</h3>
+                            <div class="text-block" id="out-market-demand">
+                                Analysis text...
+                            </div>
+                        </div>
+
+                        <!-- Competitors Matrix -->
+                        <div class="analysis-section">
+                            <h3 class="section-title">⚔️ Similar Ideas & Competitors</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Identified commercial competitors and active alternatives:</p>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Competitor / Reach</th>
+                                            <th>Successes</th>
+                                            <th>Faults / Drawbacks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="competitors-table-body">
+                                        <!-- Row insertion -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations Verdict Card -->
+                        <div class="verdict-card" id="out-verdict-card">
+                            <span>🚀</span> <span id="out-verdict-text">Highly Promising - proceed with validation.</span>
+                        </div>
+
+                        <!-- Strategic Recommendations Grid -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;" id="recommendations-grid">
+                            
+                            <!-- Positive Branch: Add Features -->
+                            <div class="analysis-section" id="features-section">
+                                <h3 class="section-title">➕ Recommended Features to Add</h3>
+                                <ul class="list-items features" id="out-features-list">
+                                    <!-- List items -->
+                                </ul>
+                            </div>
+                            
+                            <!-- Positive Branch: Validation -->
+                            <div class="analysis-section" id="validation-section">
+                                <h3 class="section-title">⚡ Validation Plan</h3>
+                                <ul class="list-items validation" id="out-validation-list">
+                                    <!-- List items -->
+                                </ul>
+                            </div>
+
+                            <!-- Pivot Branch: Alternatives -->
+                            <div class="analysis-section" id="alternatives-section" style="grid-column: span 2; display: none;">
+                                <h3 class="section-title">🔄 Recommended Pivots & Alternative Directions</h3>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Based on market density or feasibility limits, consider these interest-aligned alternatives:</p>
+                                <ul class="list-items alternatives" id="out-alternatives-list">
+                                    <!-- List items -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Sources & Reference Documents Used -->
+                        <div class="sources-section">
+                            <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem;">Crawled Sources & Verifiable Data</h3>
+                            <div class="source-link-group" id="out-sources-group">
+                                <!-- Pills -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Pitch Coach Tab Output -->
+                    <div class="pitch-coach-area" id="pitch-coach-tab-content">
+                        <div class="shark-panel">
+                            <div class="shark-avatar">🦈</div>
+                            <div class="shark-details">
+                                <h4 id="shark-label">AI Shark Panel</h4>
+                                <p>Pitch your startup and defend your business model to secure an investment deal.</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-history" id="chat-box">
+                            <!-- Dialogue lines insert here -->
+                        </div>
+
+                        <div class="chat-input-area" id="chat-input-container">
+                            <input type="text" id="pitch-user-input" placeholder="Type your response to the Shark..." onkeydown="handleChatKey(event)">
+                            <button class="chat-send-btn" onclick="sendPitchResponse()">Send Pitch</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentIdea = "";
+        let pitchHistory = [];
+        let currentTab = "analysis";
+
+        // Load events on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchEvents();
+        });
+
+        // Safe escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Switch Tabs
+        function switchTab(tab) {
+            const analysisTabBtn = document.getElementById('tab-btn-analysis');
+            const pitchTabBtn = document.getElementById('tab-btn-pitch');
+            const analysisContent = document.getElementById('analysis-tab-content');
+            const pitchContent = document.getElementById('pitch-coach-tab-content');
+
+            if (tab === 'analysis') {
+                currentTab = "analysis";
+                analysisTabBtn.classList.add('active');
+                pitchTabBtn.classList.remove('active');
+                analysisContent.style.display = 'block';
+                pitchContent.style.display = 'none';
+            } else {
+                currentTab = "pitch";
+                pitchTabBtn.classList.add('active');
+                analysisTabBtn.classList.remove('active');
+                analysisContent.style.display = 'none';
+                pitchContent.style.display = 'flex';
+                
+                // Initialize pitch coach if it's empty
+                if (pitchHistory.length === 0 && currentIdea) {
+                    startPitchCoach();
+                }
+            }
+        }
+
+        // Fetch events from API
+        async function fetchEvents() {
+            const container = document.getElementById('events-container');
+            try {
+                const response = await fetch('/api/events');
+                if (!response.ok) throw new Error('Failed to fetch events');
+                
+                const data = await response.json();
+                
+                if (!data.events || data.events.length === 0) {
+                    container.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 2rem; font-size: 0.9rem;">No upcoming pitch calls found.</div>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                data.events.forEach(event => {
+                    let tagClass = 'tag-accelerator';
+                    const type = (event.type || '').toLowerCase();
+                    if (type.includes('competition') || type.includes('pitch') || type.includes('hackathon')) {
+                        tagClass = 'tag-competition';
+                    } else if (type.includes('casting') || type.includes('shark') || type.includes('show')) {
+                        tagClass = 'tag-casting';
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'event-card';
+                    card.innerHTML = `
+                        <div>
+                            <div class="event-header">
+                                <span class="event-name">${escapeHtml(event.name)}</span>
+                                <span class="event-tag ${tagClass}">${escapeHtml(event.type)}</span>
+                            </div>
+                            <div class="event-desc">${escapeHtml(event.description)}</div>
+                        </div>
+                        <div class="event-footer">
+                            <span class="event-deadline">Deadline: ${escapeHtml(event.deadline)}</span>
+                            <a href="${escapeHtml(event.link)}" target="_blank" class="event-link">Apply ↗</a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<div style="text-align: center; color: var(--accent-rose); padding: 2rem; font-size: 0.85rem;">Failed to fetch live booster events.</div>`;
+            }
+        }
+
+        // Handle Idea Submit
+        async function submitIdea(event) {
+            event.preventDefault();
+            
+            const ideaText = document.getElementById('startup-idea').value;
+            const interests = document.getElementById('user-interests').value;
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const stateEmpty = document.getElementById('state-empty');
+            const stateLoading = document.getElementById('state-loading');
+            const analysisOutput = document.getElementById('analysis-tab-content');
+            const pitchOutput = document.getElementById('pitch-coach-tab-content');
+            const loadingSubtext = document.getElementById('loading-subtext');
+            const tabsHeader = document.getElementById('tabs-header');
+            
+            // Set Loading States
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Analyzing...";
+            stateEmpty.style.display = 'none';
+            analysisOutput.style.display = 'none';
+            pitchOutput.style.display = 'none';
+            tabsHeader.style.display = 'none';
+            stateLoading.style.display = 'flex';
+            
+            // Reset Pitch Coach state
+            currentIdea = ideaText;
+            pitchHistory = [];
+            document.getElementById('chat-box').innerHTML = '';
+            document.getElementById('chat-input-container').style.display = 'flex';
+
+            // Dynamic loading messages to show real-life actions
+            const loadingMessages = [
+                "Scouring Reddit for user pain points...",
+                "Searching GitHub for open-source repositories...",
+                "Identifying commercial competitors...",
+                "Evaluating strengths, weaknesses, opportunities, & threats...",
+                "Running SWOT evaluations with Groq LLM...",
+                "Synthesizing recommendations..."
+            ];
+            
+            let msgIdx = 0;
+            const loadingInterval = setInterval(() => {
+                msgIdx = (msgIdx + 1) % loadingMessages.length;
+                loadingSubtext.innerText = loadingMessages[msgIdx];
+            }, 2500);
+
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idea: ideaText,
+                        user_interests: interests || null
+                    })
+                });
+
+                clearInterval(loadingInterval);
+                
+                if (!response.ok) {
+                    const errData = await response.ok ? {} : await response.json();
+                    throw new Error(errData.detail || 'Analysis request failed.');
+                }
+
+                const result = await response.json();
+                renderResults(result);
+
+                // Show tabs
+                tabsHeader.style.display = 'flex';
+                switchTab('analysis');
+
+            } catch (err) {
+                clearInterval(loadingInterval);
+                console.error(err);
+                alert(`Error during analysis: ${err.message}`);
+                stateEmpty.style.display = 'block';
+                stateLoading.style.display = 'none';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Run Viability Check";
+            }
+        }
+
+        // Render Results Dashboard
+        function renderResults(data) {
+            const stateLoading = document.getElementById('state-loading');
+            const analysisOutput = document.getElementById('analysis-tab-content');
+            
+            stateLoading.style.display = 'none';
+            analysisOutput.style.display = 'block';
+
+            // Set Viability Score Circle
+            const score = data.viability_score || 0;
+            const circle = document.getElementById('score-circle');
+            const scoreText = document.getElementById('score-text');
+            const offset = 283 - (283 * score) / 100;
+            circle.style.strokeDashoffset = offset;
+            
+            let currentVal = 0;
+            const textTimer = setInterval(() => {
+                if (currentVal >= score) {
+                    scoreText.innerText = score;
+                    clearInterval(textTimer);
+                } else {
+                    currentVal += 1;
+                    scoreText.innerText = currentVal;
+                }
+            }, 10);
+
+            // Set Summary & Verdict
+            document.getElementById('out-idea-summary').innerText = data.idea_summary || '';
+            
+            const verdictText = (data.recommendations && data.recommendations.verdict) || '';
+            document.getElementById('out-verdict-text').innerText = verdictText;
+            
+            const verdictCard = document.getElementById('out-verdict-card');
+            const isPromising = data.is_promising;
+            
+            if (isPromising) {
+                verdictCard.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%)';
+                verdictCard.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                verdictCard.querySelector('span').innerText = '🚀';
+            } else {
+                verdictCard.style.background = 'linear-gradient(135deg, rgba(244, 63, 94, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)';
+                verdictCard.style.borderColor = 'rgba(244, 63, 94, 0.3)';
+                verdictCard.querySelector('span').innerText = '🔄';
+            }
+
+            // Populate SWOT Analysis lists
+            const swot = data.swot_analysis || {};
+            populateSwotList('swot-strengths', swot.strengths);
+            populateSwotList('swot-weaknesses', swot.weaknesses);
+            populateSwotList('swot-opportunities', swot.opportunities);
+            populateSwotList('swot-threats', swot.threats);
+
+            // Set Market Demand paragraph
+            document.getElementById('out-market-demand').innerText = data.market_demand_analysis || '';
+
+            // Render Competitors Table
+            const tbody = document.getElementById('competitors-table-body');
+            tbody.innerHTML = '';
+            
+            if (data.similar_ideas_and_competitors && data.similar_ideas_and_competitors.length > 0) {
+                data.similar_ideas_and_competitors.forEach(comp => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="competitor-name">${escapeHtml(comp.name)}</div>
+                            <div class="competitor-reach">${escapeHtml(comp.reach)}</div>
+                        </td>
+                        <td style="color: #a7f3d0;">${escapeHtml(comp.successes)}</td>
+                        <td style="color: #fecdd3;">${escapeHtml(comp.faults)}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-secondary)">No competitors found in web index. You may be first to market!</td></tr>`;
+            }
+
+            // Render Recommendations Grid
+            const featuresList = document.getElementById('out-features-list');
+            const validationList = document.getElementById('out-validation-list');
+            const alternativesList = document.getElementById('out-alternatives-list');
+            
+            featuresList.innerHTML = '';
+            validationList.innerHTML = '';
+            alternativesList.innerHTML = '';
+
+            const recs = data.recommendations || {};
+            
+            if (recs.features_to_add) {
+                recs.features_to_add.forEach(feat => {
+                    const li = document.createElement('li');
+                    li.innerText = feat;
+                    featuresList.appendChild(li);
+                });
+            }
+            if (recs.validation_steps) {
+                recs.validation_steps.forEach(step => {
+                    const li = document.createElement('li');
+                    li.innerText = step;
+                    validationList.appendChild(li);
+                });
+            }
+            if (recs.alternative_ideas) {
+                recs.alternative_ideas.forEach(alt => {
+                    const li = document.createElement('li');
+                    li.innerText = alt;
+                    alternativesList.appendChild(li);
+                });
+            }
+
+            const featuresSection = document.getElementById('features-section');
+            const validationSection = document.getElementById('validation-section');
+            const alternativesSection = document.getElementById('alternatives-section');
+            
+            if (isPromising) {
+                featuresSection.style.display = 'block';
+                validationSection.style.display = 'block';
+                alternativesSection.style.display = 'none';
+            } else {
+                featuresSection.style.display = 'none';
+                validationSection.style.display = 'none';
+                alternativesSection.style.display = 'block';
+            }
+
+            // Render Crawled Sources
+            const sourcesGroup = document.getElementById('out-sources-group');
+            sourcesGroup.innerHTML = '';
+            
+            const sources = data.raw_sources || {};
+            const allPills = [];
+            
+            ['reddit', 'github', 'competitors'].forEach(category => {
+                if (sources[category]) {
+                    sources[category].forEach(src => {
+                        allPills.push({ title: src.title, link: src.link, cat: category });
+                    });
+                }
+            });
+
+            if (allPills.length > 0) {
+                allPills.forEach(pill => {
+                    const a = document.createElement('a');
+                    a.className = 'source-pill';
+                    a.href = pill.link;
+                    a.target = '_blank';
+                    
+                    let icon = '🔗';
+                    if (pill.cat === 'reddit') icon = '👽';
+                    if (pill.cat === 'github') icon = '💻';
+                    
+                    a.innerText = `${icon} ${pill.title}`;
+                    sourcesGroup.appendChild(a);
+                });
+            } else {
+                sourcesGroup.innerHTML = `<span style="color:var(--text-secondary); font-size:0.85rem">No external sources indexed.</span>`;
+            }
+        }
+
+        // Helper to populate SWOT list elements
+        function populateSwotList(elementId, items) {
+            const list = document.getElementById(elementId);
+            list.innerHTML = '';
+            if (items && items.length > 0) {
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerText = item;
+                    list.appendChild(li);
+                });
+            } else {
+                list.innerHTML = '<li>N/A</li>';
+            }
+        }
+
+        // Start Shark Tank Pitch Coach
+        async function startPitchCoach() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 1rem;">Loading your AI Shark Investor...</div>`;
+            
+            try {
+                const response = await fetch('/api/pitch-coach', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        idea: currentIdea,
+                        history: [],
+                        user_response: null
+                    })
+                });
+
+                if (!response.ok) throw new Error("Could not initialize pitch coach");
+
+                const result = await response.json();
+                chatBox.innerHTML = '';
+                
+                // Set Shark label
+                document.getElementById('shark-label').innerText = `${result.shark_name} (AI Shark)`;
+
+                // Display first question
+                appendSharkMessage(result.next_question);
+                
+                // Add to local history
+                pitchHistory.push({ role: "shark", content: result.next_question });
+
+            } catch (err) {
+                console.error(err);
+                chatBox.innerHTML = `<div style="text-align: center; color: var(--accent-rose); padding: 1rem;">Failed to start Pitch Coach. Check server console.</div>`;
+            }
+        }
+
+        // Append Shark message
+        function appendSharkMessage(text, evaluation = null) {
+            const chatBox = document.getElementById('chat-box');
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-bubble bubble-shark';
+            
+            let htmlContent = '';
+            if (evaluation) {
+                htmlContent += `<div class="chat-feedback"><strong>Shark Review:</strong> ${escapeHtml(evaluation)}</div>`;
+            }
+            htmlContent += `<div style="margin-top:0.4rem">${escapeHtml(text)}</div>`;
+            
+            msgDiv.innerHTML = htmlContent;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Append User message
+        function appendUserMessage(text) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-bubble bubble-user';
+            msgDiv.innerText = text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Send User Response
+        async function sendPitchResponse() {
+            const inputEl = document.getElementById('pitch-user-input');
+            const responseText = inputEl.value.trim();
+            if (!responseText) return;
+
+            // Clear input
+            inputEl.value = '';
+
+            // Append User message
+            appendUserMessage(responseText);
+            
+            // Add user response to request payload history, but not the UI's display-only fields
+            const requestHistory = [...pitchHistory];
+            
+            // Add to local state history
+            pitchHistory.push({ role: "user", content: responseText });
+
+            // Show temporary loading indicator
+            const chatBox = document.getElementById('chat-box');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'temp-shark-loading';
+            loadingDiv.style = 'color: var(--text-secondary); font-style: italic; font-size: 0.85rem; padding-left: 10px; margin-top: 5px;';
+            loadingDiv.innerText = 'Shark is writing a response...';
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch('/api/pitch-coach', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        idea: currentIdea,
+                        history: requestHistory,
+                        user_response: responseText
+                    })
+                });
+
+                // Remove loading indicator
+                const loader = document.getElementById('temp-shark-loading');
+                if (loader) loader.remove();
+
+                if (!response.ok) throw new Error("Pitch reply failed");
+
+                const result = await response.json();
+
+                if (result.is_pitch_finished) {
+                    // Show evaluation and verdict banner
+                    appendSharkMessage("I've heard enough.", result.evaluation);
+                    
+                    const isDeal = !result.deal_verdict.toLowerCase().includes("out");
+                    const verdictClass = isDeal ? "" : "rejected";
+                    const verdictTitle = isDeal ? "🤝 DEAL OFFERED!" : "❌ I'M OUT";
+                    
+                    const verdictDiv = document.createElement('div');
+                    verdictDiv.className = `verdict-banner ${verdictClass}`;
+                    verdictDiv.innerHTML = `
+                        <h4>${verdictTitle}</h4>
+                        <p>${escapeHtml(result.deal_verdict)}</p>
+                    `;
+                    chatBox.appendChild(verdictDiv);
+                    
+                    // Hide input
+                    document.getElementById('chat-input-container').style.display = 'none';
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                } else {
+                    // Append new question
+                    appendSharkMessage(result.next_question, result.evaluation);
+                    pitchHistory.push({ role: "shark", content: result.next_question });
+                }
+
+            } catch (err) {
+                console.error(err);
+                const loader = document.getElementById('temp-shark-loading');
+                if (loader) loader.remove();
+                alert(`Error replying to Shark: ${err.message}`);
+            }
+        }
+
+        // Handle Enter key inside Chat input
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendPitchResponse();
+            }
+        }
+    </script>
+</body>
+</html>
