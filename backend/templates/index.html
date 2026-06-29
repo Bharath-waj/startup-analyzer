@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
@@ -849,6 +851,84 @@
             50% { transform: scale(1.02); box-shadow: 0 0 45px rgba(168, 85, 247, 0.5), 0 0 70px rgba(6, 182, 212, 0.3); }
             100% { transform: scale(0.98); box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
         }
+
+        /* Voice / Audio integration styles */
+        .voice-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-family);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .voice-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .voice-btn.active {
+            background: rgba(244, 63, 94, 0.2);
+            border-color: var(--accent-rose);
+            color: var(--accent-rose);
+            animation: micPulse 1.5s infinite;
+        }
+
+        .voice-btn.icon-only {
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .voice-btn.sound-toggle.unmuted {
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .speaker-bubble-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .speaker-bubble-btn:hover {
+            color: var(--accent-cyan);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .speaker-bubble-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        @keyframes micPulse {
+            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
     </style>
 </head>
 <body>
@@ -868,7 +948,18 @@
                     
                     <form id="analyze-form" onsubmit="submitIdea(event)">
                         <div class="form-group">
-                            <label for="startup-idea">Startup Idea</label>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <label for="startup-idea" style="margin-bottom: 0;">Startup Idea</label>
+                                <button type="button" id="mic-idea-btn" class="voice-btn" onclick="startVoiceInput('startup-idea', 'mic-idea-btn')" title="Speak your idea">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                        <line x1="12" y1="19" x2="12" y2="23"/>
+                                        <line x1="8" y1="23" x2="16" y2="23"/>
+                                    </svg>
+                                    <span>Voice Input</span>
+                                </button>
+                            </div>
                             <textarea id="startup-idea" placeholder="Describe your startup idea clearly. E.g., An AI-powered recipe planner that scans your fridge using a camera to generate meal prep lists..." required></textarea>
                         </div>
 
@@ -990,6 +1081,16 @@
                             </div>
                         </div>
 
+                        <!-- Industry Growth Trend Graph -->
+                        <div class="analysis-section" id="growth-chart-section" style="display: none;">
+                            <h3 class="section-title">📈 Industry Growth Projection</h3>
+                            <div class="text-block" style="background: rgba(10, 15, 25, 0.4); border: 1px solid var(--card-border); padding: 1.5rem;">
+                                <div style="height: 250px; position: relative; width: 100%;">
+                                    <canvas id="growthChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Competitors Matrix -->
                         <div class="analysis-section">
                             <h3 class="section-title">⚔️ Similar Ideas & Competitors</h3>
@@ -1058,10 +1159,22 @@
                     <div class="pitch-coach-area" id="pitch-coach-tab-content">
                         <div class="shark-panel">
                             <div class="shark-avatar">🦈</div>
-                            <div class="shark-details">
+                            <div class="shark-details" style="flex-grow: 1;">
                                 <h4 id="shark-label">AI Shark Panel</h4>
                                 <p>Pitch your startup and defend your business model to secure an investment deal.</p>
                             </div>
+                            <button type="button" id="sound-toggle-btn" class="voice-btn sound-toggle" onclick="toggleSpeech()" title="Toggle voice narration">
+                                <svg id="sound-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                                </svg>
+                                <svg id="sound-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                    <line x1="23" y1="9" x2="17" y2="15"/>
+                                    <line x1="17" y1="9" x2="23" y2="15"/>
+                                </svg>
+                                <span id="sound-toggle-text">Muted</span>
+                            </button>
                         </div>
 
                         <div class="chat-history" id="chat-box">
@@ -1069,7 +1182,15 @@
                         </div>
 
                         <div class="chat-input-area" id="chat-input-container">
-                            <input type="text" id="pitch-user-input" placeholder="Type your response to the Shark..." onkeydown="handleChatKey(event)">
+                            <input type="text" id="pitch-user-input" placeholder="Type or speak your response to the Shark..." onkeydown="handleChatKey(event)">
+                            <button type="button" id="mic-pitch-btn" class="voice-btn icon-only" onclick="startVoiceInput('pitch-user-input', 'mic-pitch-btn')" title="Speak your response">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                    <line x1="12" y1="19" x2="12" y2="23"/>
+                                    <line x1="8" y1="23" x2="16" y2="23"/>
+                                </svg>
+                            </button>
                             <button class="chat-send-btn" onclick="sendPitchResponse()">Send Pitch</button>
                         </div>
                     </div>
@@ -1082,6 +1203,9 @@
         let currentIdea = "";
         let pitchHistory = [];
         let currentTab = "analysis";
+        let isSpeechEnabled = false;
+        let currentUtterance = null;
+        let activeRecognition = null;
 
         // Load events on page load
         window.addEventListener('DOMContentLoaded', () => {
@@ -1472,15 +1596,35 @@
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chat-bubble bubble-shark';
             
+            // Clean/escape quotes for safe inline function call passing
+            const safeJsText = escapeHtml(text).replace(/'/g, "\\'");
+            
             let htmlContent = '';
             if (evaluation) {
                 htmlContent += `<div class="chat-feedback"><strong>Shark Review:</strong> ${escapeHtml(evaluation)}</div>`;
             }
-            htmlContent += `<div style="margin-top:0.4rem">${escapeHtml(text)}</div>`;
+            
+            htmlContent += `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+                    <div style="margin-top:0.4rem; flex-grow: 1;">${escapeHtml(text)}</div>
+                    <button class="speaker-bubble-btn" onclick="speakText('${safeJsText}')" title="Read aloud">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
             
             msgDiv.innerHTML = htmlContent;
             chatBox.appendChild(msgDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Auto-narration
+            if (isSpeechEnabled) {
+                const speechContent = evaluation ? (evaluation + ". " + text) : text;
+                speakText(speechContent);
+            }
         }
 
         // Append User message
@@ -1577,6 +1721,133 @@
             if (event.key === 'Enter') {
                 sendPitchResponse();
             }
+        }
+
+        // --- WEB SPEECH API INTEGRATION ---
+
+        // Toggle Speech Narration
+        function toggleSpeech() {
+            isSpeechEnabled = !isSpeechEnabled;
+            const btn = document.getElementById('sound-toggle-btn');
+            const onIcon = document.getElementById('sound-on-icon');
+            const offIcon = document.getElementById('sound-off-icon');
+            const text = document.getElementById('sound-toggle-text');
+            
+            if (isSpeechEnabled) {
+                btn.classList.add('unmuted');
+                onIcon.style.display = 'block';
+                offIcon.style.display = 'none';
+                text.innerText = "Narration ON";
+                speakText("Narration enabled.");
+            } else {
+                btn.classList.remove('unmuted');
+                onIcon.style.display = 'none';
+                offIcon.style.display = 'block';
+                text.innerText = "Muted";
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+        }
+
+        // Text to Speech
+        function speakText(text) {
+            if (!window.speechSynthesis) return;
+            
+            // Clean text of markdown/HTML before speaking
+            const cleanedText = text
+                .replace(/<[^>]*>/g, '') // remove HTML tags
+                .replace(/\*\*|__/g, '') // remove bold markers
+                .replace(/\*|_/g, '');    // remove italic markers
+                
+            window.speechSynthesis.cancel(); // cancel any active speech
+            
+            const utterance = new SpeechSynthesisUtterance(cleanedText);
+            
+            // Try to find a premium English voice
+            const voices = window.speechSynthesis.getVoices();
+            let englishVoice = voices.find(v => v.lang.startsWith('en-US') && v.name.includes('Google')) ||
+                               voices.find(v => v.lang.startsWith('en') && v.name.includes('Natural')) ||
+                               voices.find(v => v.lang.startsWith('en'));
+            
+            if (englishVoice) {
+                utterance.voice = englishVoice;
+            }
+            
+            utterance.pitch = 0.95; // slightly lower pitched
+            utterance.rate = 1.0;   // natural pacing
+            
+            currentUtterance = utterance;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Speech Recognition (Voice to Text)
+        function startVoiceInput(targetInputId, btnId) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Speech Recognition is not supported by your browser. Please try Google Chrome or Microsoft Edge.");
+                return;
+            }
+
+            const btn = document.getElementById(btnId);
+            if (btn.classList.contains('active')) {
+                if (activeRecognition) {
+                    activeRecognition.stop();
+                }
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                btn.classList.add('active');
+                const textSpan = btn.querySelector('span');
+                if (textSpan) textSpan.innerText = "Listening...";
+                activeRecognition = recognition;
+            };
+
+            recognition.onresult = (event) => {
+                const resultText = event.results[0][0].transcript;
+                const targetInput = document.getElementById(targetInputId);
+                if (targetInput) {
+                    if (targetInput.value) {
+                        targetInput.value += ' ' + resultText;
+                    } else {
+                        targetInput.value = resultText;
+                    }
+                    targetInput.dispatchEvent(new Event('input'));
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech Recognition Error:", event.error);
+                stopRecognitionUI(btn, btnId);
+            };
+
+            recognition.onend = () => {
+                stopRecognitionUI(btn, btnId);
+            };
+
+            recognition.start();
+        }
+
+        function stopRecognitionUI(btn, btnId) {
+            btn.classList.remove('active');
+            const textSpan = btn.querySelector('span');
+            if (textSpan) {
+                textSpan.innerText = btnId === 'mic-idea-btn' ? "Voice Input" : "";
+            }
+            activeRecognition = null;
+        }
+
+        // Initialize voices asynchronously
+        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
         }
     </script>
 </body>
