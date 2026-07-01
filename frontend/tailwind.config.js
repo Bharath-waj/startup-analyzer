@@ -45,6 +45,39 @@ export default {
           '70%': { boxShadow: '0 0 0 8px rgba(225, 29, 72, 0)' },
           '100%': { boxShadow: '0 0 0 0 rgba(225, 29, 72, 0)' },
         },
+        // Splash screen keyframes
+        'splash-orbit': {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        'splash-float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        'splash-pulse-ring': {
+          '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+          '50%': { opacity: '0.7', transform: 'scale(1.06)' },
+        },
+        'splash-zoom-in': {
+          from: { opacity: '0', transform: 'scale(0.8)' },
+          to: { opacity: '1', transform: 'scale(1)' },
+        },
+        'splash-zoom-out': {
+          from: { opacity: '1', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(1.1)' },
+        },
+        'splash-fade-out': {
+          from: { opacity: '1' },
+          to: { opacity: '0' },
+        },
+        'splash-rise': {
+          from: { opacity: '0', transform: 'translateY(20px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        'splash-progress': {
+          from: { width: '0%' },
+          to: { width: '100%' },
+        },
       },
       animation: {
         'screen-in': 'screenIn 0.45s cubic-bezier(0.22,1,0.36,1) both',
