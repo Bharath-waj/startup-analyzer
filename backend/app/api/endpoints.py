@@ -5,7 +5,8 @@ from app.services.ai_service import (
     generate_search_queries, 
     analyze_startup_idea, 
     parse_events, 
-    pitch_coach_interact
+    pitch_coach_interact,
+    generate_pitch_deck
 )
 from app.config import EVENTS_CACHE_EXPIRY
 import asyncio
@@ -146,7 +147,17 @@ async def pitch_coach(req: PitchCoachRequest):
         hist_list.append({"role": msg.role, "content": msg.content})
         
     try:
-        response = pitch_coach_interact(req.idea, hist_list, req.user_response)
+        response = pitch_coach_interact(req.idea, hist_list, req.user_response, req.shark_name)
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Pitch Coach Error: {str(e)}")
+
+@router.post("/pitch-deck")
+async def pitch_deck(req: AnalyzeRequest):
+    if not req.idea.strip():
+        raise HTTPException(status_code=400, detail="Startup idea cannot be empty.")
+    try:
+        deck = generate_pitch_deck(req.idea)
+        return deck
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Pitch Deck Error: {str(e)}")

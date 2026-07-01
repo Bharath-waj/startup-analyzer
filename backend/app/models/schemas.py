@@ -13,3 +13,5 @@ class PitchCoachRequest(BaseModel):
     idea: str = Field(..., description="The startup idea being pitched")
     history: List[PitchMessage] = Field(default=[], description="The roleplay dialogue history")
     user_response: Optional[str] = Field(None, description="The user's response to the last question asked by the Shark")
+    shark_name: Optional[str] = Field(None, description="The name of the Shark evaluating the pitch")
+

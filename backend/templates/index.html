@@ -3,35 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Startup Analyzer - AI Viability & Shark Tank Coach</title>
-    <meta name="description" content="Validate your startup idea with real-world Reddit, GitHub, and competitor data, and pitch to AI Sharks.">
+    <title>Startup Analyzer — Viability & Pitch Coach</title>
+    <meta name="description" content="Validate your startup idea with real-world Reddit, GitHub, and competitor data, and pitch to AI investors.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: rgba(22, 29, 49, 0.65);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent-cyan: #06b6d4;
-            --accent-purple: #a855f7;
-            --accent-emerald: #10b981;
-            --accent-rose: #f43f5e;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
-            --shadow-glow: 0 0 20px rgba(6, 182, 212, 0.15);
+            /* Light professional SaaS palette */
+            --bg-color: #f5f6f8;
+            --surface: #ffffff;
+            --surface-muted: #f8fafc;
+            --card-border: #e6e8ec;
+            --hairline: #eef0f3;
+
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --accent-soft: #eef2ff;
+            --accent-border: #c7d2fe;
+
+            --emerald: #059669;
+            --emerald-soft: #ecfdf5;
+            --rose: #e11d48;
+            --rose-soft: #fff1f2;
+            --amber: #d97706;
+            --amber-soft: #fffbeb;
+            --violet: #7c3aed;
+            --violet-soft: #f5f3ff;
+
+            --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.05);
+            --radius: 14px;
+            --radius-sm: 10px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: var(--font-family);
@@ -39,178 +54,180 @@
             color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
-            background-attachment: fixed;
-            padding: 2rem 1rem;
+            padding: 2.5rem 1.5rem;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1280px; margin: 0 auto; }
 
-        /* Header section styling */
+        /* Inline icon helper */
+        .ico { width: 18px; height: 18px; flex-shrink: 0; display: inline-flex; }
+        .ico svg { width: 100%; height: 100%; display: block; }
+
+        /* Header */
         header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            animation: fadeInDown 0.8s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            margin-bottom: 2rem;
         }
 
-        h1 {
-            font-size: 2.75rem;
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+        }
+        .brand-mark svg { width: 24px; height: 24px; }
+
+        .brand-text h1 {
+            font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 50%, #f43f5e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.05em;
-            display: inline-block;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            line-height: 1.2;
         }
 
-        header p {
+        .brand-text p {
             color: var(--text-secondary);
-            font-size: 1.1rem;
-            font-weight: 400;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         /* Grid layout */
         .grid-layout {
             display: grid;
-            grid-template-columns: 430px 1fr;
-            gap: 2rem;
+            grid-template-columns: 400px 1fr;
+            gap: 1.5rem;
             align-items: start;
         }
 
         @media (max-width: 1024px) {
-            .grid-layout {
-                grid-template-columns: 1fr;
-            }
+            .grid-layout { grid-template-columns: 1fr; }
         }
 
-        /* Premium glassmorphic cards */
+        /* Flat cards (no glass, no blur) */
         .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
+            background: var(--surface);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2.25rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
         }
 
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.12);
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-primary);
         }
+        .card-title .ico { color: var(--accent); }
 
-        /* Tabs styling */
+        /* Tabs */
         .tabs-header {
             display: flex;
-            gap: 0.5rem;
-            border-bottom: 1px solid var(--card-border);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+            gap: 0.25rem;
+            background: var(--surface-muted);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            padding: 0.3rem;
+            margin-bottom: 1.75rem;
         }
 
         .tab-btn {
+            flex: 1;
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            padding: 0.75rem 1.25rem;
+            padding: 0.65rem 1rem;
             font-family: var(--font-family);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            border-radius: 7px;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
         }
+        .tab-btn .ico { width: 16px; height: 16px; }
 
-        .tab-btn:hover {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.04);
-        }
+        .tab-btn:hover { color: var(--text-primary); }
 
         .tab-btn.active {
-            color: var(--accent-cyan);
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.2);
+            color: var(--accent);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
         }
 
         /* Form elements */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        .form-group { margin-bottom: 1.35rem; }
 
         label {
             display: block;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 0.8rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--accent-cyan);
+            color: var(--text-primary);
         }
 
         textarea, input[type="text"] {
             width: 100%;
-            background: rgba(10, 15, 25, 0.7);
+            background: var(--surface);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1rem;
+            border-radius: var(--radius-sm);
+            padding: 0.85rem 0.95rem;
             color: var(--text-primary);
             font-family: var(--font-family);
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
+            font-size: 0.92rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
+
+        textarea::placeholder, input::placeholder { color: var(--text-muted); }
 
         textarea:focus, input[type="text"]:focus {
             outline: none;
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
-            background: rgba(10, 15, 25, 0.9);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
+        textarea { resize: vertical; min-height: 120px; }
 
-        /* Glow buttons */
+        /* Primary button (flat, no glow) */
         .btn-glow {
             width: 100%;
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            background: var(--accent);
             border: none;
-            border-radius: 12px;
-            padding: 1.1rem;
-            font-size: 1rem;
+            border-radius: var(--radius-sm);
+            padding: 0.9rem;
+            font-family: var(--font-family);
+            font-size: 0.95rem;
             font-weight: 700;
-            color: white;
+            color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-glow);
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
+            transition: background 0.15s ease, transform 0.05s ease;
+            box-shadow: var(--shadow-sm);
         }
 
-        .btn-glow:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(6, 182, 212, 0.35);
-        }
+        .btn-glow:hover { background: var(--accent-hover); }
+        .btn-glow:active { transform: translateY(1px); }
+        .btn-glow:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .btn-glow:active {
-            transform: translateY(0);
-        }
-
-        /* Results dashboard */
+        /* Results container */
         .results-container {
-            min-height: 550px;
+            min-height: 560px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
         }
 
         .state-empty {
@@ -220,13 +237,20 @@
             margin: auto 0;
         }
 
-        .state-empty svg {
-            width: 70px;
-            height: 70px;
-            stroke: var(--text-secondary);
-            opacity: 0.4;
-            margin-bottom: 1.5rem;
+        .state-empty .empty-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 1.5rem;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .state-empty .empty-icon svg { width: 28px; height: 28px; }
+
+        .state-empty h3 { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); }
 
         /* Loading state */
         .state-loading {
@@ -240,101 +264,68 @@
         }
 
         .loader-orb {
-            width: 80px;
-            height: 80px;
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--accent-soft);
+            border-top-color: var(--accent);
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
-            position: relative;
-            animation: pulseOrb 2s infinite ease-in-out;
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
-            margin-bottom: 2rem;
-        }
-
-        .loader-orb::after {
-            content: '';
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
-            background: var(--bg-color);
-            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1.75rem;
         }
 
         .state-loading h3 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-primary);
         }
 
-        /* Analysis output layout */
-        .analysis-output {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
+        /* Analysis output */
+        .analysis-output { display: none; animation: fadeIn 0.4s ease-out; }
 
-        /* Top summary & Viability meter */
         .analysis-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 2rem;
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 1.75rem;
-            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--hairline);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         @media (max-width: 600px) {
-            .analysis-header {
-                flex-direction: column;
-                text-align: center;
-            }
+            .analysis-header { flex-direction: column; text-align: center; }
         }
 
-        .analysis-title-area {
-            flex: 1;
-        }
+        .analysis-title-area { flex: 1; }
 
         .analysis-title-area h2 {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
             letter-spacing: -0.02em;
         }
 
-        .analysis-title-area p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
+        .analysis-title-area p { color: var(--text-secondary); font-size: 0.92rem; }
 
+        /* Viability meter */
         .meter-container {
             position: relative;
-            width: 110px;
-            height: 110px;
+            width: 104px;
+            height: 104px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .meter-svg {
-            transform: rotate(-90deg);
-            width: 100px;
-            height: 100px;
-        }
+        .meter-svg { transform: rotate(-90deg); width: 100px; height: 100px; }
 
-        .meter-bg {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.05);
-            stroke-width: 10;
-        }
+        .meter-bg { fill: none; stroke: var(--hairline); stroke-width: 9; }
 
         .meter-fill {
             fill: none;
             stroke: url(#meter-grad);
-            stroke-width: 10;
+            stroke-width: 9;
             stroke-dasharray: 283;
             stroke-dashoffset: 283;
             stroke-linecap: round;
@@ -343,7 +334,7 @@
 
         .meter-score {
             position: absolute;
-            font-size: 1.6rem;
+            font-size: 1.55rem;
             font-weight: 800;
             color: var(--text-primary);
             display: flex;
@@ -353,224 +344,206 @@
         }
 
         .meter-score span {
-            font-size: 0.7rem;
+            font-size: 0.62rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-top: 2px;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 600;
         }
 
-        /* Sections */
+        /* Section titles */
         .section-title {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            border-left: 3px solid var(--accent-cyan);
-            padding-left: 0.75rem;
+            gap: 0.55rem;
+            color: var(--text-primary);
         }
+        .section-title .ico { color: var(--accent); width: 17px; height: 17px; }
 
-        .analysis-section {
-            margin-bottom: 2rem;
-        }
+        .analysis-section { margin-bottom: 1.75rem; }
 
         .text-block {
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-            padding: 1.25rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            font-size: 0.95rem;
-            color: #d1d5db;
+            background: var(--surface-muted);
+            border-radius: var(--radius-sm);
+            padding: 1.15rem;
+            border: 1px solid var(--hairline);
+            font-size: 0.92rem;
+            color: #334155;
         }
 
-        /* SWOT analysis grid styling */
+        /* SWOT grid */
         .swot-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 0.85rem;
             margin-top: 1rem;
         }
 
         @media (max-width: 600px) {
-            .swot-grid {
-                grid-template-columns: 1fr;
-            }
+            .swot-grid { grid-template-columns: 1fr; }
         }
 
         .swot-quad {
-            padding: 1.25rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 1.1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--card-border);
+            background: var(--surface);
         }
 
         .swot-quad h4 {
-            font-size: 0.85rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
+        .swot-quad h4 .ico { width: 14px; height: 14px; }
 
-        .swot-s { background: rgba(16, 185, 129, 0.06); border-color: rgba(16, 185, 129, 0.15); }
-        .swot-s h4 { color: var(--accent-emerald); }
-        .swot-w { background: rgba(244, 63, 94, 0.06); border-color: rgba(244, 63, 94, 0.15); }
-        .swot-w h4 { color: var(--accent-rose); }
-        .swot-o { background: rgba(6, 182, 212, 0.06); border-color: rgba(6, 182, 212, 0.15); }
-        .swot-o h4 { color: var(--accent-cyan); }
-        .swot-t { background: rgba(168, 85, 247, 0.06); border-color: rgba(168, 85, 247, 0.15); }
-        .swot-t h4 { color: var(--accent-purple); }
+        .swot-s { background: var(--emerald-soft); border-color: #d1fae5; }
+        .swot-s h4 { color: var(--emerald); }
+        .swot-w { background: var(--rose-soft); border-color: #ffe4e6; }
+        .swot-w h4 { color: var(--rose); }
+        .swot-o { background: var(--accent-soft); border-color: var(--accent-border); }
+        .swot-o h4 { color: var(--accent); }
+        .swot-t { background: var(--amber-soft); border-color: #fde68a; }
+        .swot-t h4 { color: var(--amber); }
 
-        .swot-quad ul {
-            list-style: none;
-        }
+        .swot-quad ul { list-style: none; }
 
         .swot-quad li {
             font-size: 0.85rem;
-            color: #d1d5db;
-            margin-bottom: 0.25rem;
+            color: #334155;
+            margin-bottom: 0.35rem;
             position: relative;
-            padding-left: 1rem;
+            padding-left: 0.95rem;
         }
 
         .swot-quad li::before {
-            content: '•';
+            content: '';
             position: absolute;
             left: 0;
-            color: var(--text-secondary);
+            top: 0.6rem;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-muted);
         }
 
-        /* Competitors Table styling */
+        /* Competitors table */
         .table-responsive {
             overflow-x: auto;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             border: 1px solid var(--card-border);
             margin-top: 1rem;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.9rem;
-        }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
 
         th {
-            background: rgba(10, 15, 25, 0.6);
-            color: var(--accent-cyan);
+            background: var(--surface-muted);
+            color: var(--text-secondary);
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             letter-spacing: 0.05em;
-            padding: 1rem;
+            padding: 0.85rem 1rem;
             border-bottom: 1px solid var(--card-border);
         }
 
         td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 0.95rem 1rem;
+            border-bottom: 1px solid var(--hairline);
             vertical-align: top;
+            color: #334155;
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+        tr:last-child td { border-bottom: none; }
 
-        .competitor-name {
-            font-weight: 700;
-            color: var(--text-primary);
-        }
+        .competitor-name { font-weight: 700; color: var(--text-primary); }
 
         .competitor-reach {
-            font-size: 0.8rem;
-            background: rgba(6, 182, 212, 0.1);
-            color: var(--accent-cyan);
-            padding: 2px 6px;
-            border-radius: 4px;
+            font-size: 0.72rem;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 5px;
             display: inline-block;
-            margin-top: 4px;
+            margin-top: 5px;
+            font-weight: 600;
         }
 
-        /* Recommendations & action lists */
+        /* Verdict card */
         .verdict-card {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius-sm);
+            padding: 1.1rem 1.25rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
             color: var(--text-primary);
+            font-size: 0.92rem;
         }
+        .verdict-card .ico { width: 20px; height: 20px; color: var(--accent); }
 
         .list-items {
             list-style: none;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0.75rem;
+            gap: 0.7rem;
         }
 
         .list-items li {
             position: relative;
-            padding-left: 1.75rem;
-            font-size: 0.95rem;
-            color: #d1d5db;
+            padding-left: 1.6rem;
+            font-size: 0.9rem;
+            color: #334155;
         }
 
-        .list-items.features li::before {
-            content: '✦';
+        .list-items li .ico {
             position: absolute;
             left: 0;
-            color: var(--accent-cyan);
-            font-weight: bold;
+            top: 0.15rem;
+            width: 15px;
+            height: 15px;
         }
+        .list-items.features li .ico { color: var(--accent); }
+        .list-items.validation li .ico { color: var(--emerald); }
+        .list-items.alternatives li .ico { color: var(--violet); }
 
-        .list-items.validation li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent-emerald);
-            font-weight: bold;
-        }
-
-        .list-items.alternatives li::before {
-            content: '➔';
-            position: absolute;
-            left: 0;
-            color: var(--accent-purple);
-            font-weight: bold;
-        }
-
-        /* Events Section */
-        .events-panel {
-            margin-top: 2rem;
-        }
+        /* Events */
+        .events-panel { margin-top: 1.5rem; }
 
         .events-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 0.85rem;
             margin-top: 1rem;
         }
 
         .event-card {
-            background: rgba(10, 15, 25, 0.4);
+            background: var(--surface);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            padding: 1.1rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.25s ease;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .event-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-            background: rgba(10, 15, 25, 0.6);
+            border-color: var(--accent-border);
+            box-shadow: var(--shadow-sm);
         }
 
         .event-header {
@@ -581,41 +554,24 @@
             gap: 0.5rem;
         }
 
-        .event-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
+        .event-name { font-size: 0.92rem; font-weight: 700; color: var(--text-primary); }
 
         .event-tag {
-            font-size: 0.7rem;
-            padding: 2px 8px;
+            font-size: 0.65rem;
+            padding: 3px 9px;
             border-radius: 50px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.03em;
             white-space: nowrap;
         }
 
-        .tag-accelerator {
-            background: rgba(168, 85, 247, 0.15);
-            color: var(--accent-purple);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-
-        .tag-competition {
-            background: rgba(6, 182, 212, 0.15);
-            color: var(--accent-cyan);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-        }
-
-        .tag-casting {
-            background: rgba(244, 63, 94, 0.15);
-            color: var(--accent-rose);
-            border: 1px solid rgba(244, 63, 94, 0.3);
-        }
+        .tag-accelerator { background: var(--violet-soft); color: var(--violet); }
+        .tag-competition { background: var(--accent-soft); color: var(--accent); }
+        .tag-casting { background: var(--rose-soft); color: var(--rose); }
 
         .event-desc {
-            font-size: 0.85rem;
+            font-size: 0.83rem;
             color: var(--text-secondary);
             margin-bottom: 1rem;
             flex-grow: 1;
@@ -625,35 +581,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding-top: 0.75rem;
+            border-top: 1px solid var(--hairline);
+            padding-top: 0.7rem;
             margin-top: 0.5rem;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
         }
 
-        .event-deadline {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
+        .event-deadline { color: var(--text-muted); }
 
         .event-link {
-            color: var(--accent-cyan);
+            color: var(--accent);
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.3rem;
         }
+        .event-link .ico { width: 13px; height: 13px; }
+        .event-link:hover { color: var(--accent-hover); }
 
-        .event-link:hover {
-            color: white;
-        }
-
-        /* Sources drawer */
+        /* Sources */
         .sources-section {
-            border-top: 1px solid var(--card-border);
+            border-top: 1px solid var(--hairline);
             padding-top: 1.5rem;
-            margin-top: 2.5rem;
+            margin-top: 2rem;
         }
 
         .source-link-group {
@@ -664,197 +615,185 @@
         }
 
         .source-pill {
-            font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.78rem;
+            background: var(--surface-muted);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
-            padding: 6px 12px;
+            padding: 6px 11px;
             color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 250px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
         }
+        .source-pill .ico { width: 13px; height: 13px; flex-shrink: 0; }
 
         .source-pill:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--accent-cyan);
-            border-color: rgba(6, 182, 212, 0.3);
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent-border);
         }
 
-        /* Pitch Coach Chat UI */
+        /* Pitch Coach */
         .pitch-coach-area {
             display: none;
             flex-direction: column;
-            height: 520px;
-            animation: fadeIn 0.5s ease-out;
+            height: 540px;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .shark-panel {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+            background: var(--surface-muted);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1rem;
+            border-radius: var(--radius-sm);
+            padding: 0.9rem 1rem;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.9rem;
         }
 
         .shark-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            background: var(--accent);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+            flex-shrink: 0;
         }
+        .shark-avatar svg { width: 22px; height: 22px; }
 
-        .shark-details h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-
-        .shark-details p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
+        .shark-details h4 { font-size: 0.92rem; font-weight: 700; }
+        .shark-details p { font-size: 0.8rem; color: var(--text-secondary); }
 
         .chat-history {
             flex-grow: 1;
             overflow-y: auto;
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            background: rgba(10, 15, 25, 0.4);
+            border-radius: var(--radius-sm);
+            padding: 1.15rem;
+            background: var(--surface-muted);
             margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.9rem;
         }
 
         .chat-bubble {
-            max-width: 80%;
-            padding: 0.85rem 1.1rem;
+            max-width: 82%;
+            padding: 0.8rem 1rem;
             border-radius: 14px;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             line-height: 1.5;
         }
 
         .bubble-shark {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            color: #f1f5f9;
+            background: var(--surface);
+            border: 1px solid var(--card-border);
+            color: var(--text-primary);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
+            box-shadow: var(--shadow-sm);
         }
 
         .bubble-user {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-            border: 1px solid rgba(6, 182, 212, 0.25);
-            color: #f1f5f9;
+            background: var(--accent);
+            color: #fff;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
         }
 
         .chat-feedback {
-            font-size: 0.82rem;
-            color: var(--accent-cyan);
-            border-left: 2px solid var(--accent-cyan);
-            padding-left: 0.5rem;
-            margin-top: 0.5rem;
-            font-style: italic;
+            font-size: 0.8rem;
+            color: var(--accent);
+            border-left: 2px solid var(--accent-border);
+            padding-left: 0.6rem;
+            margin-bottom: 0.5rem;
         }
 
-        .chat-input-area {
-            display: flex;
-            gap: 0.75rem;
-        }
+        .chat-input-area { display: flex; gap: 0.6rem; }
 
         .chat-input-area input {
             flex-grow: 1;
-            background: rgba(10, 15, 25, 0.7);
+            background: var(--surface);
             border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 0.85rem;
+            border-radius: var(--radius-sm);
+            padding: 0.8rem;
             color: var(--text-primary);
             font-family: var(--font-family);
+            font-size: 0.9rem;
         }
 
         .chat-input-area input:focus {
             outline: none;
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
         .chat-send-btn {
-            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+            background: var(--accent);
             border: none;
-            border-radius: 10px;
-            padding: 0 1.5rem;
-            color: white;
+            border-radius: var(--radius-sm);
+            padding: 0 1.4rem;
+            color: #fff;
             font-weight: 700;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.15s ease;
         }
 
-        .chat-send-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-        }
+        .chat-send-btn:hover { background: var(--accent-hover); }
 
-        /* Deal Verdict Card */
+        /* Deal verdict banner */
         .verdict-banner {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
-            border: 2px dashed var(--accent-emerald);
-            border-radius: 12px;
-            padding: 1.5rem;
+            background: var(--emerald-soft);
+            border: 1px solid #a7f3d0;
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
             text-align: center;
-            animation: pulseOrb 2.5s infinite ease-in-out;
             margin-top: auto;
         }
 
         .verdict-banner.rejected {
-            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-            border-color: var(--accent-rose);
+            background: var(--rose-soft);
+            border-color: #fecdd3;
         }
 
         .verdict-banner h4 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--emerald);
         }
+        .verdict-banner.rejected h4 { color: var(--rose); }
+        .verdict-banner h4 .ico { width: 20px; height: 20px; }
 
-        .verdict-banner p {
-            font-size: 0.95rem;
-            color: #e2e8f0;
-        }
+        .verdict-banner p { font-size: 0.9rem; color: #334155; }
 
         /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulseOrb {
-            0% { transform: scale(0.98); box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
-            50% { transform: scale(1.02); box-shadow: 0 0 45px rgba(168, 85, 247, 0.5), 0 0 70px rgba(6, 182, 212, 0.3); }
-            100% { transform: scale(0.98); box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Voice / Audio integration styles */
+        /* Voice / audio controls */
         .voice-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--surface);
             border: 1px solid var(--card-border);
             border-radius: 8px;
             color: var(--text-secondary);
@@ -862,90 +801,94 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.45rem;
             font-family: var(--font-family);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .voice-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--surface-muted);
             color: var(--text-primary);
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: var(--text-muted);
         }
 
         .voice-btn.active {
-            background: rgba(244, 63, 94, 0.2);
-            border-color: var(--accent-rose);
-            color: var(--accent-rose);
+            background: var(--rose-soft);
+            border-color: #fecdd3;
+            color: var(--rose);
             animation: micPulse 1.5s infinite;
         }
 
         .voice-btn.icon-only {
-            padding: 10px;
-            border-radius: 10px;
+            padding: 9px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .voice-btn svg {
-            width: 16px;
-            height: 16px;
-        }
+        .voice-btn svg { width: 15px; height: 15px; }
 
         .voice-btn.sound-toggle.unmuted {
-            color: var(--accent-emerald);
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
+            color: var(--emerald);
+            background: var(--emerald-soft);
+            border-color: #a7f3d0;
         }
 
         .speaker-bubble-btn {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             cursor: pointer;
             padding: 2px;
             border-radius: 4px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
-        .speaker-bubble-btn:hover {
-            color: var(--accent-cyan);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .speaker-bubble-btn svg {
-            width: 14px;
-            height: 14px;
-        }
+        .speaker-bubble-btn:hover { color: var(--accent); background: var(--accent-soft); }
+        .speaker-bubble-btn svg { width: 14px; height: 14px; }
 
         @keyframes micPulse {
-            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(225, 29, 72, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1 id="app-title">Startup Analyzer</h1>
-            <p>Brutal real-world viability analysis & Shark Tank coaching simulator</p>
+            <div class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"/>
+                    <path d="m19 9-5 5-4-4-3 3"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <h1 id="app-title">Startup Analyzer</h1>
+                <p>Real-world viability analysis &amp; investor pitch coaching</p>
+            </div>
         </header>
 
         <div class="grid-layout">
             <!-- Left Panel: Input & Events -->
             <div class="left-panel">
                 <section class="glass-card form-section" aria-labelledby="form-title">
-                    <h2 id="form-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--accent-cyan);">💡</span> Analyze Your Idea
+                    <h2 id="form-title" class="card-title">
+                        <span class="ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18h6"/><path d="M10 22h4"/>
+                                <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+                            </svg>
+                        </span>
+                        Analyze Your Idea
                     </h2>
-                    
+
                     <form id="analyze-form" onsubmit="submitIdea(event)">
                         <div class="form-group">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -966,7 +909,7 @@
                         <div class="form-group">
                             <label for="user-interests">Your Hobbies / Interests (Optional)</label>
                             <input type="text" id="user-interests" placeholder="E.g., cooking, fitness, SaaS, finance...">
-                            <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 5px;">Used to explore pivots and suggest alternative startup directions.</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 6px;">Used to explore pivots and suggest alternative startup directions.</span>
                         </div>
 
                         <button type="submit" class="btn-glow" id="submit-btn">Run Viability Check</button>
@@ -974,13 +917,18 @@
                 </section>
 
                 <section class="events-panel" aria-labelledby="events-title">
-                    <h2 id="events-title" style="font-size: 1.25rem; font-weight: 700; margin-top: 2rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--accent-purple);">🦈</span> Booster Events & Pitch Calls
+                    <h2 id="events-title" class="card-title" style="margin-top: 1.75rem;">
+                        <span class="ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                <path d="M16 2v4M8 2v4M3 10h18"/>
+                            </svg>
+                        </span>
+                        Booster Events &amp; Pitch Calls
                     </h2>
                     <div class="events-grid" id="events-container">
-                        <!-- Loading placeholder -->
-                        <div style="text-align: center; color: var(--text-secondary); padding: 2rem; font-size: 0.9rem;">
-                            Scanning casting calls & accelerator deadlines...
+                        <div style="text-align: center; color: var(--text-muted); padding: 2rem; font-size: 0.88rem;">
+                            Scanning casting calls &amp; accelerator deadlines...
                         </div>
                     </div>
                 </section>
@@ -989,55 +937,64 @@
             <!-- Right Panel: Tabs & Results -->
             <div class="right-panel">
                 <main class="glass-card results-container" id="results-card">
-                    
-                    <!-- Tabs Selection -->
+
+                    <!-- Tabs -->
                     <div class="tabs-header" id="tabs-header" style="display: none;">
                         <button class="tab-btn active" id="tab-btn-analysis" onclick="switchTab('analysis')">
-                            📊 Viability Report
+                            <span class="ico" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                                </svg>
+                            </span>
+                            Viability Report
                         </button>
                         <button class="tab-btn" id="tab-btn-pitch" onclick="switchTab('pitch')">
-                            💬 Shark Tank Pitch Coach
+                            <span class="ico" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </span>
+                            Investor Pitch Coach
                         </button>
                     </div>
-                    
-                    <!-- Empty/Welcome State -->
+
+                    <!-- Empty State -->
                     <div class="state-empty" id="state-empty">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
+                        <div class="empty-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </div>
                         <h3>Awaiting Startup Idea</h3>
-                        <p style="margin-top: 0.5rem; font-size: 0.95rem;">Enter your startup idea and optional interests on the left. The AI will crawl Reddit, GitHub, and competitor archives to generate a viability rating and SWOT analysis.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.92rem;">Enter your startup idea and optional interests on the left. The analyzer will crawl Reddit, GitHub, and competitor archives to generate a viability rating and SWOT analysis.</p>
                     </div>
 
                     <!-- Loading State -->
                     <div class="state-loading" id="state-loading">
                         <div class="loader-orb"></div>
                         <h3>Analyzing Real-World Footprint</h3>
-                        <p id="loading-subtext" style="color: var(--text-secondary); max-width: 400px; font-size: 0.9rem; margin-top: 0.5rem;">
+                        <p id="loading-subtext" style="color: var(--text-secondary); max-width: 400px; font-size: 0.88rem; margin-top: 0.5rem;">
                             Searching Reddit for user complaints...
                         </p>
                     </div>
 
-                    <!-- Detailed Analysis Tab Output -->
+                    <!-- Analysis Tab -->
                     <div class="analysis-output" id="analysis-tab-content">
-                        
-                        <!-- Header with Title & Meter -->
+
                         <div class="analysis-header">
                             <div class="analysis-title-area">
                                 <h2 id="out-verdict-title">Analysis Completed</h2>
                                 <p id="out-idea-summary">Your startup idea summary goes here.</p>
                             </div>
-                            
-                            <!-- Circular Viability Score -->
+
                             <div class="meter-container">
                                 <svg class="meter-svg">
                                     <defs>
                                         <linearGradient id="meter-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" stop-color="#06b6d4" />
-                                            <stop offset="50%" stop-color="#a855f7" />
-                                            <stop offset="100%" stop-color="#f43f5e" />
+                                            <stop offset="0%" stop-color="#6366f1" />
+                                            <stop offset="100%" stop-color="#4f46e5" />
                                         </linearGradient>
                                     </defs>
                                     <circle class="meter-bg" cx="50" cy="50" r="45" />
@@ -1050,9 +1007,14 @@
                             </div>
                         </div>
 
-                        <!-- SWOT Analysis Section -->
+                        <!-- SWOT -->
                         <div class="analysis-section">
-                            <h3 class="section-title">⚡ SWOT Analysis</h3>
+                            <h3 class="section-title">
+                                <span class="ico" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                                </span>
+                                SWOT Analysis
+                            </h3>
                             <div class="swot-grid">
                                 <div class="swot-quad swot-s">
                                     <h4>Strengths</h4>
@@ -1073,28 +1035,43 @@
                             </div>
                         </div>
 
-                        <!-- Market Demand Analysis -->
+                        <!-- Market Demand -->
                         <div class="analysis-section">
-                            <h3 class="section-title">📊 Market Demand & Reddit Discussions</h3>
+                            <h3 class="section-title">
+                                <span class="ico" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                </span>
+                                Market Demand &amp; Reddit Discussions
+                            </h3>
                             <div class="text-block" id="out-market-demand">
                                 Analysis text...
                             </div>
                         </div>
 
-                        <!-- Industry Growth Trend Graph -->
+                        <!-- Growth Chart -->
                         <div class="analysis-section" id="growth-chart-section" style="display: none;">
-                            <h3 class="section-title">📈 Industry Growth Projection</h3>
-                            <div class="text-block" style="background: rgba(10, 15, 25, 0.4); border: 1px solid var(--card-border); padding: 1.5rem;">
+                            <h3 class="section-title">
+                                <span class="ico" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                                </span>
+                                Industry Growth Projection
+                            </h3>
+                            <div class="text-block" style="padding: 1.5rem;">
                                 <div style="height: 250px; position: relative; width: 100%;">
                                     <canvas id="growthChart"></canvas>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Competitors Matrix -->
+                        <!-- Competitors -->
                         <div class="analysis-section">
-                            <h3 class="section-title">⚔️ Similar Ideas & Competitors</h3>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Identified commercial competitors and active alternatives:</p>
+                            <h3 class="section-title">
+                                <span class="ico" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                </span>
+                                Similar Ideas &amp; Competitors
+                            </h3>
+                            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Identified commercial competitors and active alternatives:</p>
                             <div class="table-responsive">
                                 <table>
                                     <thead>
@@ -1104,63 +1081,73 @@
                                             <th>Faults / Drawbacks</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="competitors-table-body">
-                                        <!-- Row insertion -->
-                                    </tbody>
+                                    <tbody id="competitors-table-body"></tbody>
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Recommendations Verdict Card -->
+                        <!-- Verdict -->
                         <div class="verdict-card" id="out-verdict-card">
-                            <span>🚀</span> <span id="out-verdict-text">Highly Promising - proceed with validation.</span>
+                            <span class="ico" id="out-verdict-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+                            </span>
+                            <span id="out-verdict-text">Highly Promising - proceed with validation.</span>
                         </div>
 
-                        <!-- Strategic Recommendations Grid -->
+                        <!-- Recommendations Grid -->
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;" id="recommendations-grid">
-                            
-                            <!-- Positive Branch: Add Features -->
+
                             <div class="analysis-section" id="features-section">
-                                <h3 class="section-title">➕ Recommended Features to Add</h3>
-                                <ul class="list-items features" id="out-features-list">
-                                    <!-- List items -->
-                                </ul>
-                            </div>
-                            
-                            <!-- Positive Branch: Validation -->
-                            <div class="analysis-section" id="validation-section">
-                                <h3 class="section-title">⚡ Validation Plan</h3>
-                                <ul class="list-items validation" id="out-validation-list">
-                                    <!-- List items -->
-                                </ul>
+                                <h3 class="section-title">
+                                    <span class="ico" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    </span>
+                                    Recommended Features to Add
+                                </h3>
+                                <ul class="list-items features" id="out-features-list"></ul>
                             </div>
 
-                            <!-- Pivot Branch: Alternatives -->
+                            <div class="analysis-section" id="validation-section">
+                                <h3 class="section-title">
+                                    <span class="ico" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                                    </span>
+                                    Validation Plan
+                                </h3>
+                                <ul class="list-items validation" id="out-validation-list"></ul>
+                            </div>
+
                             <div class="analysis-section" id="alternatives-section" style="grid-column: span 2; display: none;">
-                                <h3 class="section-title">🔄 Recommended Pivots & Alternative Directions</h3>
-                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Based on market density or feasibility limits, consider these interest-aligned alternatives:</p>
-                                <ul class="list-items alternatives" id="out-alternatives-list">
-                                    <!-- List items -->
-                                </ul>
+                                <h3 class="section-title">
+                                    <span class="ico" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                                    </span>
+                                    Recommended Pivots &amp; Alternative Directions
+                                </h3>
+                                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Based on market density or feasibility limits, consider these interest-aligned alternatives:</p>
+                                <ul class="list-items alternatives" id="out-alternatives-list"></ul>
                             </div>
                         </div>
 
-                        <!-- Sources & Reference Documents Used -->
+                        <!-- Sources -->
                         <div class="sources-section">
-                            <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem;">Crawled Sources & Verifiable Data</h3>
-                            <div class="source-link-group" id="out-sources-group">
-                                <!-- Pills -->
-                            </div>
+                            <h3 style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem;">Crawled Sources &amp; Verifiable Data</h3>
+                            <div class="source-link-group" id="out-sources-group"></div>
                         </div>
 
                     </div>
 
-                    <!-- Pitch Coach Tab Output -->
+                    <!-- Pitch Coach Tab -->
                     <div class="pitch-coach-area" id="pitch-coach-tab-content">
                         <div class="shark-panel">
-                            <div class="shark-avatar">🦈</div>
+                            <div class="shark-avatar" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                                </svg>
+                            </div>
                             <div class="shark-details" style="flex-grow: 1;">
-                                <h4 id="shark-label">AI Shark Panel</h4>
+                                <h4 id="shark-label">AI Investor Panel</h4>
                                 <p>Pitch your startup and defend your business model to secure an investment deal.</p>
                             </div>
                             <button type="button" id="sound-toggle-btn" class="voice-btn sound-toggle" onclick="toggleSpeech()" title="Toggle voice narration">
@@ -1177,12 +1164,10 @@
                             </button>
                         </div>
 
-                        <div class="chat-history" id="chat-box">
-                            <!-- Dialogue lines insert here -->
-                        </div>
+                        <div class="chat-history" id="chat-box"></div>
 
                         <div class="chat-input-area" id="chat-input-container">
-                            <input type="text" id="pitch-user-input" placeholder="Type or speak your response to the Shark..." onkeydown="handleChatKey(event)">
+                            <input type="text" id="pitch-user-input" placeholder="Type or speak your response to the investor..." onkeydown="handleChatKey(event)">
                             <button type="button" id="mic-pitch-btn" class="voice-btn icon-only" onclick="startVoiceInput('pitch-user-input', 'mic-pitch-btn')" title="Speak your response">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
@@ -1207,12 +1192,22 @@
         let currentUtterance = null;
         let activeRecognition = null;
 
-        // Load events on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchEvents();
-        });
+        // Reusable inline icons (replacing emoji)
+        const ICONS = {
+            rocket: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>',
+            pivot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
+            check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+            plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+            arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+            link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+            reddit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="9"/><circle cx="8.5" cy="13" r="1" fill="currentColor"/><circle cx="15.5" cy="13" r="1" fill="currentColor"/><path d="M8.5 16.5c2 1.3 5 1.3 7 0"/><path d="M12 4l1.5-2 3.5 1"/><circle cx="17" cy="3" r="1"/></svg>',
+            github: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+            handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>',
+            close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+        };
 
-        // Safe escape HTML
+        window.addEventListener('DOMContentLoaded', () => { fetchEvents(); });
+
         function escapeHtml(text) {
             if (!text) return '';
             return text
@@ -1223,7 +1218,6 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // Switch Tabs
         function switchTab(tab) {
             const analysisTabBtn = document.getElementById('tab-btn-analysis');
             const pitchTabBtn = document.getElementById('tab-btn-pitch');
@@ -1242,25 +1236,23 @@
                 analysisTabBtn.classList.remove('active');
                 analysisContent.style.display = 'none';
                 pitchContent.style.display = 'flex';
-                
-                // Initialize pitch coach if it's empty
+
                 if (pitchHistory.length === 0 && currentIdea) {
                     startPitchCoach();
                 }
             }
         }
 
-        // Fetch events from API
         async function fetchEvents() {
             const container = document.getElementById('events-container');
             try {
                 const response = await fetch('/api/events');
                 if (!response.ok) throw new Error('Failed to fetch events');
-                
+
                 const data = await response.json();
-                
+
                 if (!data.events || data.events.length === 0) {
-                    container.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 2rem; font-size: 0.9rem;">No upcoming pitch calls found.</div>`;
+                    container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 2rem; font-size: 0.88rem;">No upcoming pitch calls found.</div>`;
                     return;
                 }
 
@@ -1286,24 +1278,23 @@
                         </div>
                         <div class="event-footer">
                             <span class="event-deadline">Deadline: ${escapeHtml(event.deadline)}</span>
-                            <a href="${escapeHtml(event.link)}" target="_blank" class="event-link">Apply ↗</a>
+                            <a href="${escapeHtml(event.link)}" target="_blank" class="event-link">Apply <span class="ico">${ICONS.arrow}</span></a>
                         </div>
                     `;
                     container.appendChild(card);
                 });
             } catch (err) {
                 console.error(err);
-                container.innerHTML = `<div style="text-align: center; color: var(--accent-rose); padding: 2rem; font-size: 0.85rem;">Failed to fetch live booster events.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: var(--rose); padding: 2rem; font-size: 0.85rem;">Failed to fetch live booster events.</div>`;
             }
         }
 
-        // Handle Idea Submit
         async function submitIdea(event) {
             event.preventDefault();
-            
+
             const ideaText = document.getElementById('startup-idea').value;
             const interests = document.getElementById('user-interests').value;
-            
+
             const submitBtn = document.getElementById('submit-btn');
             const stateEmpty = document.getElementById('state-empty');
             const stateLoading = document.getElementById('state-loading');
@@ -1311,8 +1302,7 @@
             const pitchOutput = document.getElementById('pitch-coach-tab-content');
             const loadingSubtext = document.getElementById('loading-subtext');
             const tabsHeader = document.getElementById('tabs-header');
-            
-            // Set Loading States
+
             submitBtn.disabled = true;
             submitBtn.innerText = "Analyzing...";
             stateEmpty.style.display = 'none';
@@ -1320,14 +1310,12 @@
             pitchOutput.style.display = 'none';
             tabsHeader.style.display = 'none';
             stateLoading.style.display = 'flex';
-            
-            // Reset Pitch Coach state
+
             currentIdea = ideaText;
             pitchHistory = [];
             document.getElementById('chat-box').innerHTML = '';
             document.getElementById('chat-input-container').style.display = 'flex';
 
-            // Dynamic loading messages to show real-life actions
             const loadingMessages = [
                 "Scouring Reddit for user pain points...",
                 "Searching GitHub for open-source repositories...",
@@ -1336,7 +1324,7 @@
                 "Running SWOT evaluations with Groq LLM...",
                 "Synthesizing recommendations..."
             ];
-            
+
             let msgIdx = 0;
             const loadingInterval = setInterval(() => {
                 msgIdx = (msgIdx + 1) % loadingMessages.length;
@@ -1346,9 +1334,7 @@
             try {
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         idea: ideaText,
                         user_interests: interests || null
@@ -1356,7 +1342,7 @@
                 });
 
                 clearInterval(loadingInterval);
-                
+
                 if (!response.ok) {
                     const errData = await response.ok ? {} : await response.json();
                     throw new Error(errData.detail || 'Analysis request failed.');
@@ -1365,7 +1351,6 @@
                 const result = await response.json();
                 renderResults(result);
 
-                // Show tabs
                 tabsHeader.style.display = 'flex';
                 switchTab('analysis');
 
@@ -1381,21 +1366,19 @@
             }
         }
 
-        // Render Results Dashboard
         function renderResults(data) {
             const stateLoading = document.getElementById('state-loading');
             const analysisOutput = document.getElementById('analysis-tab-content');
-            
+
             stateLoading.style.display = 'none';
             analysisOutput.style.display = 'block';
 
-            // Set Viability Score Circle
             const score = data.viability_score || 0;
             const circle = document.getElementById('score-circle');
             const scoreText = document.getElementById('score-text');
             const offset = 283 - (283 * score) / 100;
             circle.style.strokeDashoffset = offset;
-            
+
             let currentVal = 0;
             const textTimer = setInterval(() => {
                 if (currentVal >= score) {
@@ -1407,39 +1390,38 @@
                 }
             }, 10);
 
-            // Set Summary & Verdict
             document.getElementById('out-idea-summary').innerText = data.idea_summary || '';
-            
+
             const verdictText = (data.recommendations && data.recommendations.verdict) || '';
             document.getElementById('out-verdict-text').innerText = verdictText;
-            
+
             const verdictCard = document.getElementById('out-verdict-card');
+            const verdictIcon = document.getElementById('out-verdict-icon');
             const isPromising = data.is_promising;
-            
+
             if (isPromising) {
-                verdictCard.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%)';
-                verdictCard.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-                verdictCard.querySelector('span').innerText = '🚀';
+                verdictCard.style.background = 'var(--emerald-soft)';
+                verdictCard.style.borderColor = '#a7f3d0';
+                verdictIcon.style.color = 'var(--emerald)';
+                verdictIcon.innerHTML = ICONS.rocket;
             } else {
-                verdictCard.style.background = 'linear-gradient(135deg, rgba(244, 63, 94, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)';
-                verdictCard.style.borderColor = 'rgba(244, 63, 94, 0.3)';
-                verdictCard.querySelector('span').innerText = '🔄';
+                verdictCard.style.background = 'var(--amber-soft)';
+                verdictCard.style.borderColor = '#fde68a';
+                verdictIcon.style.color = 'var(--amber)';
+                verdictIcon.innerHTML = ICONS.pivot;
             }
 
-            // Populate SWOT Analysis lists
             const swot = data.swot_analysis || {};
             populateSwotList('swot-strengths', swot.strengths);
             populateSwotList('swot-weaknesses', swot.weaknesses);
             populateSwotList('swot-opportunities', swot.opportunities);
             populateSwotList('swot-threats', swot.threats);
 
-            // Set Market Demand paragraph
             document.getElementById('out-market-demand').innerText = data.market_demand_analysis || '';
 
-            // Render Competitors Table
             const tbody = document.getElementById('competitors-table-body');
             tbody.innerHTML = '';
-            
+
             if (data.similar_ideas_and_competitors && data.similar_ideas_and_competitors.length > 0) {
                 data.similar_ideas_and_competitors.forEach(comp => {
                     const row = document.createElement('tr');
@@ -1448,44 +1430,43 @@
                             <div class="competitor-name">${escapeHtml(comp.name)}</div>
                             <div class="competitor-reach">${escapeHtml(comp.reach)}</div>
                         </td>
-                        <td style="color: #a7f3d0;">${escapeHtml(comp.successes)}</td>
-                        <td style="color: #fecdd3;">${escapeHtml(comp.faults)}</td>
+                        <td style="color: var(--emerald);">${escapeHtml(comp.successes)}</td>
+                        <td style="color: var(--rose);">${escapeHtml(comp.faults)}</td>
                     `;
                     tbody.appendChild(row);
                 });
             } else {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-secondary)">No competitors found in web index. You may be first to market!</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted)">No competitors found in web index. You may be first to market!</td></tr>`;
             }
 
-            // Render Recommendations Grid
             const featuresList = document.getElementById('out-features-list');
             const validationList = document.getElementById('out-validation-list');
             const alternativesList = document.getElementById('out-alternatives-list');
-            
+
             featuresList.innerHTML = '';
             validationList.innerHTML = '';
             alternativesList.innerHTML = '';
 
             const recs = data.recommendations || {};
-            
+
             if (recs.features_to_add) {
                 recs.features_to_add.forEach(feat => {
                     const li = document.createElement('li');
-                    li.innerText = feat;
+                    li.innerHTML = `<span class="ico">${ICONS.plus}</span>${escapeHtml(feat)}`;
                     featuresList.appendChild(li);
                 });
             }
             if (recs.validation_steps) {
                 recs.validation_steps.forEach(step => {
                     const li = document.createElement('li');
-                    li.innerText = step;
+                    li.innerHTML = `<span class="ico">${ICONS.check}</span>${escapeHtml(step)}`;
                     validationList.appendChild(li);
                 });
             }
             if (recs.alternative_ideas) {
                 recs.alternative_ideas.forEach(alt => {
                     const li = document.createElement('li');
-                    li.innerText = alt;
+                    li.innerHTML = `<span class="ico">${ICONS.arrow}</span>${escapeHtml(alt)}`;
                     alternativesList.appendChild(li);
                 });
             }
@@ -1493,7 +1474,7 @@
             const featuresSection = document.getElementById('features-section');
             const validationSection = document.getElementById('validation-section');
             const alternativesSection = document.getElementById('alternatives-section');
-            
+
             if (isPromising) {
                 featuresSection.style.display = 'block';
                 validationSection.style.display = 'block';
@@ -1504,13 +1485,12 @@
                 alternativesSection.style.display = 'block';
             }
 
-            // Render Crawled Sources
             const sourcesGroup = document.getElementById('out-sources-group');
             sourcesGroup.innerHTML = '';
-            
+
             const sources = data.raw_sources || {};
             const allPills = [];
-            
+
             ['reddit', 'github', 'competitors'].forEach(category => {
                 if (sources[category]) {
                     sources[category].forEach(src => {
@@ -1525,20 +1505,19 @@
                     a.className = 'source-pill';
                     a.href = pill.link;
                     a.target = '_blank';
-                    
-                    let icon = '🔗';
-                    if (pill.cat === 'reddit') icon = '👽';
-                    if (pill.cat === 'github') icon = '💻';
-                    
-                    a.innerText = `${icon} ${pill.title}`;
+
+                    let icon = ICONS.link;
+                    if (pill.cat === 'reddit') icon = ICONS.reddit;
+                    if (pill.cat === 'github') icon = ICONS.github;
+
+                    a.innerHTML = `<span class="ico">${icon}</span>${escapeHtml(pill.title)}`;
                     sourcesGroup.appendChild(a);
                 });
             } else {
-                sourcesGroup.innerHTML = `<span style="color:var(--text-secondary); font-size:0.85rem">No external sources indexed.</span>`;
+                sourcesGroup.innerHTML = `<span style="color:var(--text-muted); font-size:0.85rem">No external sources indexed.</span>`;
             }
         }
 
-        // Helper to populate SWOT list elements
         function populateSwotList(elementId, items) {
             const list = document.getElementById(elementId);
             list.innerHTML = '';
@@ -1553,11 +1532,10 @@
             }
         }
 
-        // Start Shark Tank Pitch Coach
         async function startPitchCoach() {
             const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 1rem;">Loading your AI Shark Investor...</div>`;
-            
+            chatBox.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading your AI investor...</div>`;
+
             try {
                 const response = await fetch('/api/pitch-coach', {
                     method: 'POST',
@@ -1573,40 +1551,34 @@
 
                 const result = await response.json();
                 chatBox.innerHTML = '';
-                
-                // Set Shark label
-                document.getElementById('shark-label').innerText = `${result.shark_name} (AI Shark)`;
 
-                // Display first question
+                document.getElementById('shark-label').innerText = `${result.shark_name} (AI Investor)`;
+
                 appendSharkMessage(result.next_question);
-                
-                // Add to local history
                 pitchHistory.push({ role: "shark", content: result.next_question });
 
             } catch (err) {
                 console.error(err);
-                chatBox.innerHTML = `<div style="text-align: center; color: var(--accent-rose); padding: 1rem;">Failed to start Pitch Coach. Check server console.</div>`;
+                chatBox.innerHTML = `<div style="text-align: center; color: var(--rose); padding: 1rem;">Failed to start Pitch Coach. Check server console.</div>`;
             }
         }
 
-        // Append Shark message
         function appendSharkMessage(text, evaluation = null) {
             const chatBox = document.getElementById('chat-box');
-            
+
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chat-bubble bubble-shark';
-            
-            // Clean/escape quotes for safe inline function call passing
+
             const safeJsText = escapeHtml(text).replace(/'/g, "\\'");
-            
+
             let htmlContent = '';
             if (evaluation) {
-                htmlContent += `<div class="chat-feedback"><strong>Shark Review:</strong> ${escapeHtml(evaluation)}</div>`;
+                htmlContent += `<div class="chat-feedback"><strong>Investor review:</strong> ${escapeHtml(evaluation)}</div>`;
             }
-            
+
             htmlContent += `
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
-                    <div style="margin-top:0.4rem; flex-grow: 1;">${escapeHtml(text)}</div>
+                    <div style="flex-grow: 1;">${escapeHtml(text)}</div>
                     <button class="speaker-bubble-btn" onclick="speakText('${safeJsText}')" title="Read aloud">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
@@ -1615,19 +1587,17 @@
                     </button>
                 </div>
             `;
-            
+
             msgDiv.innerHTML = htmlContent;
             chatBox.appendChild(msgDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Auto-narration
             if (isSpeechEnabled) {
                 const speechContent = evaluation ? (evaluation + ". " + text) : text;
                 speakText(speechContent);
             }
         }
 
-        // Append User message
         function appendUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
@@ -1637,30 +1607,24 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Send User Response
         async function sendPitchResponse() {
             const inputEl = document.getElementById('pitch-user-input');
             const responseText = inputEl.value.trim();
             if (!responseText) return;
 
-            // Clear input
             inputEl.value = '';
 
-            // Append User message
             appendUserMessage(responseText);
-            
-            // Add user response to request payload history, but not the UI's display-only fields
+
             const requestHistory = [...pitchHistory];
-            
-            // Add to local state history
+
             pitchHistory.push({ role: "user", content: responseText });
 
-            // Show temporary loading indicator
             const chatBox = document.getElementById('chat-box');
             const loadingDiv = document.createElement('div');
             loadingDiv.id = 'temp-shark-loading';
-            loadingDiv.style = 'color: var(--text-secondary); font-style: italic; font-size: 0.85rem; padding-left: 10px; margin-top: 5px;';
-            loadingDiv.innerText = 'Shark is writing a response...';
+            loadingDiv.style = 'color: var(--text-muted); font-style: italic; font-size: 0.85rem; padding-left: 10px; margin-top: 5px;';
+            loadingDiv.innerText = 'Investor is writing a response...';
             chatBox.appendChild(loadingDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -1675,7 +1639,6 @@
                     })
                 });
 
-                // Remove loading indicator
                 const loader = document.getElementById('temp-shark-loading');
                 if (loader) loader.remove();
 
@@ -1684,26 +1647,24 @@
                 const result = await response.json();
 
                 if (result.is_pitch_finished) {
-                    // Show evaluation and verdict banner
                     appendSharkMessage("I've heard enough.", result.evaluation);
-                    
+
                     const isDeal = !result.deal_verdict.toLowerCase().includes("out");
                     const verdictClass = isDeal ? "" : "rejected";
-                    const verdictTitle = isDeal ? "🤝 DEAL OFFERED!" : "❌ I'M OUT";
-                    
+                    const verdictIcon = isDeal ? ICONS.handshake : ICONS.close;
+                    const verdictTitle = isDeal ? "Deal Offered" : "I'm Out";
+
                     const verdictDiv = document.createElement('div');
                     verdictDiv.className = `verdict-banner ${verdictClass}`;
                     verdictDiv.innerHTML = `
-                        <h4>${verdictTitle}</h4>
+                        <h4><span class="ico">${verdictIcon}</span>${verdictTitle}</h4>
                         <p>${escapeHtml(result.deal_verdict)}</p>
                     `;
                     chatBox.appendChild(verdictDiv);
-                    
-                    // Hide input
+
                     document.getElementById('chat-input-container').style.display = 'none';
                     chatBox.scrollTop = chatBox.scrollHeight;
                 } else {
-                    // Append new question
                     appendSharkMessage(result.next_question, result.evaluation);
                     pitchHistory.push({ role: "shark", content: result.next_question });
                 }
@@ -1712,11 +1673,10 @@
                 console.error(err);
                 const loader = document.getElementById('temp-shark-loading');
                 if (loader) loader.remove();
-                alert(`Error replying to Shark: ${err.message}`);
+                alert(`Error replying to investor: ${err.message}`);
             }
         }
 
-        // Handle Enter key inside Chat input
         function handleChatKey(event) {
             if (event.key === 'Enter') {
                 sendPitchResponse();
@@ -1725,14 +1685,13 @@
 
         // --- WEB SPEECH API INTEGRATION ---
 
-        // Toggle Speech Narration
         function toggleSpeech() {
             isSpeechEnabled = !isSpeechEnabled;
             const btn = document.getElementById('sound-toggle-btn');
             const onIcon = document.getElementById('sound-on-icon');
             const offIcon = document.getElementById('sound-off-icon');
             const text = document.getElementById('sound-toggle-text');
-            
+
             if (isSpeechEnabled) {
                 btn.classList.add('unmuted');
                 onIcon.style.display = 'block';
@@ -1750,38 +1709,34 @@
             }
         }
 
-        // Text to Speech
         function speakText(text) {
             if (!window.speechSynthesis) return;
-            
-            // Clean text of markdown/HTML before speaking
+
             const cleanedText = text
-                .replace(/<[^>]*>/g, '') // remove HTML tags
-                .replace(/\*\*|__/g, '') // remove bold markers
-                .replace(/\*|_/g, '');    // remove italic markers
-                
-            window.speechSynthesis.cancel(); // cancel any active speech
-            
+                .replace(/<[^>]*>/g, '')
+                .replace(/\*\*|__/g, '')
+                .replace(/\*|_/g, '');
+
+            window.speechSynthesis.cancel();
+
             const utterance = new SpeechSynthesisUtterance(cleanedText);
-            
-            // Try to find a premium English voice
+
             const voices = window.speechSynthesis.getVoices();
             let englishVoice = voices.find(v => v.lang.startsWith('en-US') && v.name.includes('Google')) ||
                                voices.find(v => v.lang.startsWith('en') && v.name.includes('Natural')) ||
                                voices.find(v => v.lang.startsWith('en'));
-            
+
             if (englishVoice) {
                 utterance.voice = englishVoice;
             }
-            
-            utterance.pitch = 0.95; // slightly lower pitched
-            utterance.rate = 1.0;   // natural pacing
-            
+
+            utterance.pitch = 0.95;
+            utterance.rate = 1.0;
+
             currentUtterance = utterance;
             window.speechSynthesis.speak(utterance);
         }
 
-        // Speech Recognition (Voice to Text)
         function startVoiceInput(targetInputId, btnId) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
@@ -1843,7 +1798,6 @@
             activeRecognition = null;
         }
 
-        // Initialize voices asynchronously
         if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
             window.speechSynthesis.onvoiceschanged = () => {
                 window.speechSynthesis.getVoices();

@@ -60,12 +60,23 @@ def analyze_startup_idea(idea: str, user_interests: Optional[str], search_contex
         "      \"faults\": \"What they lack, customer complaints, or limitations.\"\n"
         "    }\n"
         "  ],\n"
-        "  \"is_promising\": true, // Boolean. Set to true if the idea is viable/worth pursuing, false if it's too saturated/unfeasible.\n"
+        "  \"is_promising\": true, // Boolean. Set to true if the idea is viable/worth pursuing, false if it's saturation/unfeasible.\n"
         "  \"recommendations\": {\n"
         "    \"verdict\": \"Clear verdict sentence (e.g., 'Highly Promising - proceed with validation', 'Pivot Recommended', or 'High Risk - explore alternatives')\",\n"
         "    \"features_to_add\": [\"Feature 1\", \"Feature 2\"], // Suggest at least 3 features to add to make it competitive or stand out.\n"
         "    \"validation_steps\": [\"Step 1\", \"Step 2\"], // Actionable steps to continue validating the idea (landing page, user interviews, MVP scope).\n"
         "    \"alternative_ideas\": [\"Alt Idea 1\", \"Alt Idea 2\"] // Provide 2-3 alternative startup directions if the idea is weak, OR ways to pivot. Tailor this using the user's interests if provided.\n"
+        "  },\n"
+        "  \"lean_canvas\": {\n"
+        "    \"problem\": \"Top 1-2 customer problems or pain points (from Reddit details if any).\",\n"
+        "    \"solution\": \"Top 3 core features or ways the startup solves the problems.\",\n"
+        "    \"key_metrics\": \"1-2 metrics that matter most (e.g., active users, retention, LTV).\",\n"
+        "    \"value_proposition\": \"Single clear, compelling message stating why this is different and worth buying.\",\n"
+        "    \"unfair_advantage\": \"Something that cannot be easily copied or bought.\",\n"
+        "    \"channels\": \"Pathways to reach customers (e.g., organic search, social media, B2B sales).\",\n"
+        "    \"customer_segments\": \"Target customers and buyer personas.\",\n"
+        "    \"cost_structure\": \"Key operational and customer acquisition costs.\",\n"
+        "    \"revenue_streams\": \"Pricing, monetization methods, and lifetime value models.\"\n"
         "  }\n"
         "}\n\n"
         "Ensure all recommendations are highly actionable, detailed, and directly address the user's input and interests."
@@ -126,18 +137,46 @@ def parse_events(raw_search_context: str) -> Dict[str, Any]:
         print(f"Error parsing events: {e}")
         raise e
 
-def pitch_coach_interact(idea: str, history: List[Dict[str, str]], user_response: Optional[str]) -> Dict[str, Any]:
+def pitch_coach_interact(idea: str, history: List[Dict[str, str]], user_response: Optional[str], shark_name: Optional[str] = "Kevin O'Leary") -> Dict[str, Any]:
+    if not shark_name:
+        shark_name = "Kevin O'Leary"
+
+    # Define custom persona styles and criteria
+    personas = {
+        "Kevin O'Leary": {
+            "title": "Kevin O'Leary (Mr. Wonderful)",
+            "style": "ruthless, greedy, financial-metrics-focused, royalty-obsessed, and sharp. You care deeply about valuation, margins, distribution/licensing royalties, customer acquisition costs, and patent protection. Use signature phrases like 'You're dead to me', 'Whose idea was this? It's terrible!', 'How do I get my money back?', 'There is nothing proprietary here', or asking if they can 'squish them like a bug'. Speak in a cold, analytical, yet dramatic voice."
+        },
+        "Mark Cuban": {
+            "title": "Mark Cuban",
+            "style": "direct, tech-focused, volume/scaling-oriented, sweat-equity-valuing, and no-nonsense. You hate 'wantrepreneurs' and royalty deals. You ask about technical scalability, sweat equity, active sales channels, customer lifetime value (LTV), customer acquisition cost (CAC), and barrier to entry. Say things like 'What's the grind like?', 'Who's doing the selling?', 'Hustling is everything', 'That's not a business, that's a feature'. Be casual but extremely sharp."
+        },
+        "Lori Greiner": {
+            "title": "Lori Greiner (Queen of QVC)",
+            "style": "product-oriented, retail/packaging-focused, patentability-driven, and consumer-centric. You evaluate if the product has instant mass appeal, suitable for television or major retail. Decide quickly if the product is a 'hero' or a 'zero'. Be warm and encouraging but critically analytical of the physical product, pricing, and packaging. Say things like 'Is this a hero or a zero?', 'Can it sell on TV?', 'Do you have a utility patent?'."
+        },
+        "Barbara Corcoran": {
+            "title": "Barbara Corcoran",
+            "style": "gut-feel-reliant, branding/marketing-focused, personality-driven, and story-centric. You value the entrepreneur's story, energy, passion, grit, and salesmanship over raw spreadsheets. Trust your intuition about their character. Say things like 'I invest in people, not businesses', 'Show me the hustle', 'I don't think you have what it takes to bounce back from failure', or tell them they are too slick/rehearsed."
+        }
+    }
+
+    # Fallback to Kevin O'Leary if unknown
+    persona = personas.get(shark_name, personas["Kevin O'Leary"])
+
     system_instruction = (
-        "You are a mock Shark Tank investor (e.g., a mix of Mark Cuban and Kevin O'Leary). "
-        "You are evaluating a startup idea that the user is pitching: '" + idea + "'.\n"
+        f"You are the mock Shark Tank investor: {persona['title']}. "
+        f"You are evaluating a startup idea that the user is pitching: '{idea}'.\n"
+        f"Your tone, evaluation criteria, and attitude must align perfectly with your persona style:\n"
+        f"{persona['style']}\n\n"
         "The interaction must follow these rules:\n"
-        "1. Be sharp, direct, and brutally honest, just like on Shark Tank.\n"
-        "2. If this is the start (no dialogue history yet), introduce yourself as a Shark, state your initial impression of the idea based on its value proposition, and ask a hard opening question (e.g., 'What problem are you actually solving here?' or 'Who is your customer?').\n"
-        "3. If in progress, review the history and evaluate the user's latest response. Offer quick feedback (e.g. 'I like that margin' or 'That customer acquisition cost sounds like a fantasy'), then ask your next hard question (about scaling, barrier to entry, valuation, or distribution channels).\n"
-        "4. If this is the 4th turn (history contains 3 user answers), it's time to make a decision. Write your final assessment and choose to either make a deal offer (e.g., 'I will offer you $200k for 25%') or say 'I'm out' with a clear explanation of why.\n\n"
+        "1. Be sharp, direct, and candid, just like on Shark Tank.\n"
+        "2. If this is the start (no dialogue history yet), introduce yourself in your persona, state your initial impression of the idea based on its value proposition, and ask a hard opening question relevant to your style.\n"
+        "3. If in progress, review the history and evaluate the user's latest response. Offer quick feedback using your style, then ask your next hard question (e.g. O'Leary asks about margins, Cuban asks about scalability, Lori asks about TV/patentability, Barbara asks about passion/grit).\n"
+        "4. If this is the 4th turn (history contains 3 user answers), it's time to make a decision. Write your final assessment and choose to either make a deal offer (e.g. '$150,000 for 20% equity plus a royalty') or say 'I'm out' with a clear explanation of why.\n\n"
         "Your response MUST be a JSON object with this exact structure:\n"
         "{\n"
-        "  \"shark_name\": \"Mr. Wonderful & Cuban (Composite)\",\n"
+        f"  \"shark_name\": \"{shark_name}\",\n"
         "  \"evaluation\": \"1-2 sentences of direct, candid feedback on the user's pitching content so far.\",\n"
         "  \"next_question\": \"Your follow-up question. (Set to null if is_pitch_finished is true)\",\n"
         "  \"is_pitch_finished\": false, // Set to true on the 4th turn to conclude\n"
@@ -166,9 +205,61 @@ def pitch_coach_interact(idea: str, history: List[Dict[str, str]], user_response
     except Exception as e:
         print(f"Error in Pitch Coach interaction: {e}")
         return {
-            "shark_name": "Kevin O'Leary",
+            "shark_name": shark_name,
             "evaluation": "I am having trouble connecting to my database, but let's keep talking.",
             "next_question": "What are your customer acquisition costs?",
             "is_pitch_finished": False,
             "deal_verdict": None
+        }
+
+def generate_pitch_deck(idea: str) -> Dict[str, Any]:
+    system_instruction = (
+        "You are an elite pitch consultant and venture capital pitch deck advisor.\n"
+        "Your task is to analyze the following startup idea and generate a professional, high-fidelity 10-slide pitch deck structure.\n"
+        "Each slide must have concrete, specific, and tailored content, not generic templates.\n\n"
+        "The slides must follow standard VC sequencing:\n"
+        "1. Title Slide (Hook & vision)\n"
+        "2. The Problem (Pain points being addressed)\n"
+        "3. The Solution (Value proposition & product concept)\n"
+        "4. Target Market & TAM (Customer segments and size)\n"
+        "5. Business Model (How the company makes money)\n"
+        "6. Underlying Magic / Technology (Why it's proprietary or defensible)\n"
+        "7. Marketing & Go-To-Market Plan (Customer acquisition channels)\n"
+        "8. Competitive Analysis (Gaps in competitor solutions)\n"
+        "9. Financial Projections (Realistic milestones or growth trajectory)\n"
+        "10. The Ask & Team (Funding needed and milestones/resource allocation)\n\n"
+        "Output MUST be a JSON object with a single key 'slides' containing an array of slide objects. Schema:\n"
+        "{\n"
+        "  \"slides\": [\n"
+        "    {\n"
+        "      \"slide_number\": 1,\n"
+        "      \"title\": \"Slide Title (concise and punchy)\",\n"
+        "      \"bullets\": [\"Bullet point 1 detailing specific strategy\", \"Bullet point 2\"],\n"
+        "      \"visual_prompt\": \"Detailed descriptive prompt of the ideal high-quality graphic, chart, custom icon, or clean interface mockup for this slide.\"\n"
+        "    }\n"
+        "  ]\n"
+        "}\n"
+    )
+    try:
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[
+                {"role": "system", "content": system_instruction},
+                {"role": "user", "content": f"Startup Idea: {idea}"}
+            ],
+            response_format={"type": "json_object"}
+        )
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        print(f"Error generating pitch deck: {e}")
+        # Return fallback slides in case of API failure
+        return {
+            "slides": [
+                {
+                    "slide_number": i,
+                    "title": f"Slide {i} Title",
+                    "bullets": [f"Key detail for startup: {idea}", "Market validation and user feedback"],
+                    "visual_prompt": "Clean professional modern slide layout with diagrams and clean margins."
+                } for i in range(1, 11)
+            ]
         }
