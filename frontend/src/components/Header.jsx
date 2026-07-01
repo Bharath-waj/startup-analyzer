@@ -37,10 +37,10 @@ export default function Header() {
           <Logo size={44} />
         </div>
         <div>
-          <h1 className="bg-gradient-to-r from-brand-600 via-violet-600 to-pink-600 bg-clip-text text-xl font-extrabold leading-tight tracking-tight text-transparent">
-            Startup Analyzer
+          <h1 className="bg-gradient-to-r from-cyan-500 via-violet-600 to-purple-600 bg-clip-text text-xl font-extrabold leading-tight tracking-tight text-transparent">
+            Launch Lens
           </h1>
-          <p className="text-sm font-medium text-slate-500">Real-world viability analysis &amp; investor pitch coaching</p>
+          <p className="text-sm font-medium text-slate-500">AI-powered startup viability &amp; investor pitch coaching</p>
         </div>
       </div>
 

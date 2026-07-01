@@ -18,21 +18,44 @@ export const Ico = ({ size = 'h-[18px] w-[18px]', className = '', children }) =>
   <span className={`inline-flex shrink-0 items-center justify-center ${size} ${className}`}>{children}</span>
 )
 
-// Full colorful brand mark (self-contained gradient tile).
+// Launch Lens brand mark — aperture ring + rocket, cyan-to-violet gradient.
 export const Logo = ({ size = 44 }) => (
   <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#6366f1" />
-        <stop offset="0.55" stopColor="#7c3aed" />
-        <stop offset="1" stopColor="#db2777" />
+      <linearGradient id="lensGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#06b6d4" />
+        <stop offset="100%" stopColor="#7c3aed" />
+      </linearGradient>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#0f172a" />
+        <stop offset="100%" stopColor="#1e1b4b" />
+      </linearGradient>
+      <linearGradient id="plume" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#fbbf24" />
+        <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
       </linearGradient>
     </defs>
-    <rect width="48" height="48" rx="13" fill="url(#brandGrad)" />
-    <path d="M11 31 L20 22 L26 27 L37 15" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="20" cy="22" r="2.4" fill="#ffffff" />
-    <circle cx="26" cy="27" r="2.4" fill="#ffffff" />
-    <circle cx="37" cy="15" r="3.4" fill="#34d399" stroke="#ffffff" strokeWidth="1.5" />
+    {/* Background tile */}
+    <rect width="48" height="48" rx="13" fill="url(#bgGrad)" />
+    {/* Aperture ring — 6 blades */}
+    <circle cx="24" cy="24" r="13" stroke="url(#lensGrad)" strokeWidth="2.5" fill="none" opacity="0.5" />
+    <circle cx="24" cy="24" r="9" stroke="url(#lensGrad)" strokeWidth="1.5" fill="none" />
+    {/* Aperture blade segments */}
+    <path d="M24 11 A13 13 0 0 1 35.26 17.5" stroke="url(#lensGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+    <path d="M35.26 17.5 A13 13 0 0 1 35.26 30.5" stroke="url(#lensGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.7" />
+    <path d="M35.26 30.5 A13 13 0 0 1 24 37" stroke="url(#lensGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.9" />
+    <path d="M24 37 A13 13 0 0 1 12.74 30.5" stroke="url(#lensGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+    <path d="M12.74 30.5 A13 13 0 0 1 12.74 17.5" stroke="url(#lensGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.7" />
+    <path d="M12.74 17.5 A13 13 0 0 1 24 11" stroke="url(#lensGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.9" />
+    {/* Rocket body */}
+    <path d="M24 28 C22.5 26 22 23.5 24 19 C26 23.5 25.5 26 24 28Z" fill="white" />
+    {/* Rocket fins */}
+    <path d="M22.5 26.5 L20.5 29 L22.5 28Z" fill="#06b6d4" />
+    <path d="M25.5 26.5 L27.5 29 L25.5 28Z" fill="#7c3aed" />
+    {/* Rocket plume */}
+    <path d="M23 28 Q24 31.5 24 32 Q24 31.5 25 28" fill="url(#plume)" opacity="0.9" />
+    {/* Lens gleam */}
+    <circle cx="29" cy="17" r="1.2" fill="white" opacity="0.6" />
   </svg>
 )
 export const Search = () => (
